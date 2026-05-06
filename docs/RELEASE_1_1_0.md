@@ -2,8 +2,7 @@
 
 Release date: 2026-05-06
 
-Release state: prepared for public release; hosted evidence is pending the
-tag-triggered four-platform Release Matrix and hosted verification.
+Release state: published, latest, public, hosted-verified.
 
 ## Release Scope
 
@@ -14,27 +13,56 @@ tag-triggered four-platform Release Matrix and hosted verification.
   checklist, launch identity validation, version alignment, and release evidence
   wiring.
 
-## Prepared Artifact
+## Published Artifact
 
 - Git tag: `v1.1.0`
+- Tag object: `444818a95512526cf669dbb1997f5007d3140fbc`
+- Target commit: `d7d10eaee1b65cb9896313055bbd9704fd878e1c`
 - Previous public release: `v1.0.0`
-- Expected GitHub Release: https://github.com/codenz92/cool-lang/releases/tag/v1.1.0
-- Release state: prepared, not yet marked as hosted-verified in this record
+- GitHub Release: https://github.com/codenz92/cool-lang/releases/tag/v1.1.0
+- Release state: public, latest, non-draft, non-prerelease.
+- Promoted: `2026-05-06T22:27:53Z`
 - Required public platforms: `linux-x86_64`, `macos-x86_64`, `macos-arm64`,
   `windows-x86_64`
 
-## Launch Evidence To Record
+## Release Execution Evidence
 
 | Check | Result | Evidence |
 | ----- | ------ | -------- |
-| Release launch check | Pending final tag workflow | `dist/validation/1.1.0/release-launch.json` |
-| Branch release gate | Pending final launch commit | GitHub Actions run URL |
-| Branch release validation | Pending final launch commit | GitHub Actions run URL |
-| Publishing release matrix | Pending `v1.1.0` tag | GitHub Actions run URL |
-| Distribution readiness | Pending matrix assembly | `dist/validation/1.1.0/distribution-readiness.json` |
-| Package submission checklist | Pending matrix assembly | `dist/validation/1.1.0/DISTRIBUTION_CHECKLIST.md` |
-| Hosted public release verification | Pending public upload | `dist/hosted-validation/1.1.0/hosted-release-validation.json` |
-| Public installer audit | Pending public upload | `install.sh --version 1.1.0 --verify-metadata` |
+| Branch release gate | Passed | https://github.com/codenz92/cool-lang/actions/runs/25463902124 |
+| Branch release validation | Passed | https://github.com/codenz92/cool-lang/actions/runs/25463902118 |
+| Branch conformance suite | Passed | https://github.com/codenz92/cool-lang/actions/runs/25463902100 |
+| Tag release candidate workflow | Passed | https://github.com/codenz92/cool-lang/actions/runs/25463905281 |
+| Tag release promotion workflow | Passed | https://github.com/codenz92/cool-lang/actions/runs/25463905272 |
+| Publishing release matrix | Passed | https://github.com/codenz92/cool-lang/actions/runs/25463905288 |
+| Distribution readiness | Passed | `dist/validation/1.1.0/distribution-readiness.json` |
+| Package submission checklist | Passed | `dist/validation/1.1.0/DISTRIBUTION_CHECKLIST.md` |
+| Hosted public release verification | Passed | `/tmp/cool-1.1.0-public-hosted-release-validation.json` |
+| Public installer audit | Passed | `verify_hosted_release.sh --install-smoke --install-smoke-platform macos-arm64` |
+
+## Hosted Verification
+
+The public hosted verifier checked the release at
+`https://github.com/codenz92/cool-lang/releases/download/v1.1.0`, including:
+
+- 8 platform archives across `linux-x86_64`, `macos-x86_64`, `macos-arm64`,
+  and `windows-x86_64`.
+- 37 trust checksum entries and 31 hosted release checksum entries.
+- Package-channel archive `cool-1.1.0-package-channels.tar.gz`.
+- macOS Arm install smoke from the published `cool-1.1.0-macos-arm64.tar.gz`
+  archive.
+
+## Launch Corrections
+
+Two Windows release-gate issues were found in tag-triggered matrix validation
+before the final published release:
+
+- `51c3736` resolves Windows release-gate binary path selection by using
+  `cool.exe` on Windows shells.
+- `d7d10ea` skips native conformance in the release gate when hosted native
+  binary validation is disabled for the platform.
+
+The final `v1.1.0` tag points at `d7d10ea`.
 
 ## Launch Commands
 
@@ -49,8 +77,8 @@ bash scripts/release_launch_check.sh \
   --write-checklist "dist/validation/$VERSION/RELEASE_LAUNCH_CHECKLIST.md"
 ```
 
-For public publishing, use the `Release Matrix` workflow or push the annotated
-tag after the final launch commit is on `master`:
+For future public publishing, use the `Release Matrix` workflow or push the
+annotated tag after the final launch commit is on `master`:
 
 ```bash
 git tag -a v1.1.0 -m "Release v1.1.0"
@@ -58,6 +86,3 @@ git push origin v1.1.0
 ```
 
 Tag pushes publish a non-draft GitHub Release through the matrix workflow.
-Record the final workflow URLs, hosted verification report, package-channel
-archive hash, and package-manager submission links here after the public release
-has passed hosted verification.

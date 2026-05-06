@@ -179,7 +179,7 @@ def validate(args):
     if require_file(checks, rel_doc, f"{rel_doc} exists"):
         for needle in [
             tag,
-            "Release state: prepared",
+            "Release state:",
             "Phase 28",
             "release-launch.json",
             "distribution-readiness.json",
