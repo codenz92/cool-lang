@@ -220,6 +220,21 @@ jobs:
             --report "dist/validation/$VERSION_VALUE/distribution-readiness.json" \
             --write-checklist "dist/validation/$VERSION_VALUE/DISTRIBUTION_CHECKLIST.md"
 
+          bash scripts/package_submission_check.sh "${VERSION_ARGS[@]}" \
+            --require-channel homebrew \
+            --require-channel winget \
+            --require-channel debian \
+            --report "dist/validation/$VERSION_VALUE/package-submission.json" \
+            --write-checklist "dist/validation/$VERSION_VALUE/PACKAGE_SUBMISSION_CHECKLIST.md"
+
+          bash scripts/external_install_check.sh "${VERSION_ARGS[@]}" \
+            --require-platform linux-x86_64 \
+            --require-platform macos-x86_64 \
+            --require-platform macos-arm64 \
+            --require-platform windows-x86_64 \
+            --report "dist/validation/$VERSION_VALUE/external-install.json" \
+            --write-plan "dist/validation/$VERSION_VALUE/EXTERNAL_INSTALL_PLAN.md"
+
           VALIDATE_ARGS=(
             --version "$VERSION_VALUE"
             --platform multi

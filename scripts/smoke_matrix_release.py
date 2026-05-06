@@ -218,6 +218,40 @@ def main():
         for platform_name in PLATFORMS:
             channel_cmd.extend(["--require-platform", platform_name])
         run(channel_cmd)
+        submission_cmd = [
+            "bash",
+            "scripts/package_submission_check.sh",
+            "--dist-dir",
+            str(matrix_dist),
+            "--version",
+            version,
+            "--require-channel",
+            "homebrew",
+            "--require-channel",
+            "winget",
+            "--require-channel",
+            "debian",
+            "--report",
+            str(matrix_dist / "validation" / version / "package-submission.json"),
+            "--write-checklist",
+            str(matrix_dist / "validation" / version / "PACKAGE_SUBMISSION_CHECKLIST.md"),
+        ]
+        run(submission_cmd)
+        external_cmd = [
+            "bash",
+            "scripts/external_install_check.sh",
+            "--dist-dir",
+            str(matrix_dist),
+            "--version",
+            version,
+            "--report",
+            str(matrix_dist / "validation" / version / "external-install.json"),
+            "--write-plan",
+            str(matrix_dist / "validation" / version / "EXTERNAL_INSTALL_PLAN.md"),
+        ]
+        for platform_name in PLATFORMS:
+            external_cmd.extend(["--require-platform", platform_name])
+        run(external_cmd)
         validate_cmd = [
             "bash",
             "scripts/validate_release.sh",

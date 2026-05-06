@@ -1,0 +1,22 @@
+name = "first30"
+version = "0.1.0"
+main = "src/main.cool"
+sources = ["src"]
+
+[build]
+profile = "release"
+
+[capabilities]
+file = false
+network = false
+env = false
+process = false
+
+[tasks.run]
+run = "cool src/main.cool"
+
+[tasks.check]
+run = "cool check src/main.cool"
+
+[tasks.build]
+run = "cool build"

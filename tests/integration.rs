@@ -8912,7 +8912,7 @@ fn test_pulse_and_control_apps_run_checks_from_manifest() {
 }
 
 #[test]
-fn test_release_audit_app_reports_phase28_surface() {
+fn test_release_audit_app_reports_phase29_surface() {
     let output = Command::new(cool_bin())
         .args(["apps/release_audit.cool", "--strict", "--json"])
         .output()
@@ -8937,6 +8937,47 @@ fn test_release_audit_app_reports_phase28_surface() {
     assert!(
         stdout.contains("docs/PACKAGE_MANAGER_SUBMISSIONS.md exists"),
         "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("docs/ECOSYSTEM_ADOPTION.md exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("scripts/package_submission_check.py exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("scripts/external_install_check.py exists"),
+        "stdout:\n{stdout}"
+    );
+}
+
+#[test]
+fn test_first_30_minutes_example_runs_and_checks() {
+    let repo_root = std::env::current_dir().unwrap();
+    let source = repo_root
+        .join("examples")
+        .join("first_30_minutes")
+        .join("src")
+        .join("main.cool");
+
+    let output = run_cool_path_with_args(&source, &[]).unwrap();
+    assert!(output.contains("Cool first 30 minutes"), "stdout:\n{output}");
+    assert!(output.contains("average: 85"), "stdout:\n{output}");
+    assert!(output.contains("status: ready"), "stdout:\n{output}");
+
+    let vm_output = run_cool_path_with_args(&source, &["--vm"]).unwrap();
+    assert_eq!(output, vm_output);
+
+    let check_output = Command::new(cool_bin())
+        .args(["check", source.to_str().unwrap()])
+        .output()
+        .unwrap();
+    assert!(
+        check_output.status.success(),
+        "stdout:\n{}\nstderr:\n{}",
+        String::from_utf8_lossy(&check_output.stdout),
+        String::from_utf8_lossy(&check_output.stderr)
     );
 }
 

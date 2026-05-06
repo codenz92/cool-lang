@@ -210,7 +210,7 @@ def validate(args):
         ("scripts/release_candidate.sh", "RELEASE_*.md", "release candidates package release records"),
         ("scripts/validate_release.py", "PACKAGE_MANAGER_SUBMISSIONS.md", "release validation requires package submissions doc"),
         ("scripts/validate_release.py", "RELEASE_", "release validation requires versioned release record"),
-        ("apps/release_audit.cool", "Phase 28", "release audit checks Phase 28 roadmap"),
+        ("apps/release_audit.cool", "Phase 29", "release audit checks current roadmap phase"),
         (".github/workflows/release-validation.yml", "release_launch_check.sh", "release validation workflow runs launch check"),
         (".github/workflows/release-matrix.yml", "release_launch_check.sh", "release matrix workflow runs launch check"),
         (".github/workflows/published-release.yml", "release_launch_check.sh", "published-release workflow runs launch check"),

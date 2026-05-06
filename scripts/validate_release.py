@@ -260,6 +260,18 @@ def validate_archive(asset, package_name, version):
         f"{root}/scripts/performance_baseline.sh",
         f"{root}/scripts/performance_baseline.py",
     ]
+    roadmap_text = files.get(f"{root}/ROADMAP.md", b"").decode("utf-8", errors="replace")
+    if "Phase 29" in roadmap_text:
+        required += [
+            f"{root}/docs/PACKAGE_SUBMISSION_STATUS.json",
+            f"{root}/docs/ECOSYSTEM_ADOPTION.md",
+            f"{root}/docs/FIRST_30_MINUTES.md",
+            f"{root}/docs/MAINTENANCE.md",
+            f"{root}/scripts/package_submission_check.sh",
+            f"{root}/scripts/package_submission_check.py",
+            f"{root}/scripts/external_install_check.sh",
+            f"{root}/scripts/external_install_check.py",
+        ]
     for rel in required:
         if rel not in files:
             fail(f"{asset.filename} missing payload file {rel}")

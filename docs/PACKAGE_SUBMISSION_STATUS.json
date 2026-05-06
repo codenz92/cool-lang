@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-05-06",
+  "package": {
+    "name": "cool",
+    "current_release": "1.1.0"
+  },
+  "policy": {
+    "immutable_assets_required": true,
+    "accepted_statuses": [
+      "ready",
+      "submitted",
+      "published",
+      "blocked",
+      "deferred"
+    ]
+  },
+  "channels": {
+    "homebrew": {
+      "status": "ready",
+      "source": "dist/channels/1.1.0/homebrew/cool.rb",
+      "verification": "brew audit --strict --online --formula dist/channels/1.1.0/homebrew/cool.rb",
+      "submission_url": "",
+      "published_url": "",
+      "notes": "Submit after hosted release verification and package submission check pass."
+    },
+    "winget": {
+      "status": "ready",
+      "source": "dist/channels/1.1.0/winget/Codenz.Cool/1.1.0",
+      "verification": "winget validate dist/channels/1.1.0/winget/Codenz.Cool/1.1.0",
+      "submission_url": "",
+      "published_url": "",
+      "notes": "Submit after Windows zip URL/hash are verified from the public release."
+    },
+    "debian": {
+      "status": "ready",
+      "source": "dist/channels/1.1.0/apt",
+      "verification": "dpkg-deb --info dist/channels/1.1.0/apt/pool/main/c/cool/cool_1.1.0_amd64.deb",
+      "submission_url": "",
+      "published_url": "",
+      "notes": "Use generated apt tree as mirror input or downstream packaging input after hosted verification."
+    }
+  }
+}

@@ -297,6 +297,10 @@ Release gate: $GATE_STATUS
 - \`docs/RELEASE_RUNBOOK.md\`
 - \`docs/SUPPORT_MATRIX.md\`
 - \`docs/PACKAGE_MANAGER_SUBMISSIONS.md\`
+- \`docs/PACKAGE_SUBMISSION_STATUS.json\`
+- \`docs/ECOSYSTEM_ADOPTION.md\`
+- \`docs/FIRST_30_MINUTES.md\`
+- \`docs/MAINTENANCE.md\`
 - \`scripts/release_gate.sh\`
 - \`scripts/release_launch_check.sh\`
 - \`scripts/release_candidate.sh\`
@@ -306,6 +310,10 @@ Release gate: $GATE_STATUS
 - \`scripts/publish_release.sh\`
 - \`scripts/package_channels.sh\`
 - \`scripts/package_channels.py\`
+- \`scripts/package_submission_check.sh\`
+- \`scripts/package_submission_check.py\`
+- \`scripts/external_install_check.sh\`
+- \`scripts/external_install_check.py\`
 - \`scripts/assemble_matrix_release.sh\`
 - \`scripts/assemble_matrix_release.py\`
 - \`scripts/validate_release.sh\`
@@ -484,6 +492,8 @@ cp docs/README.md docs/COMPATIBILITY.md docs/CONFORMANCE.md docs/ADOPTION.md "$R
 cp docs/DISTRIBUTION.md docs/DOGFOODING.md docs/LANGUAGE_REFERENCE.md "$RC_DIR/docs/"
 cp docs/NATIVE_COMPILER.md docs/STDLIB_OVERVIEW.md "$RC_DIR/docs/"
 cp docs/PACKAGE_MANAGER_SUBMISSIONS.md "$RC_DIR/docs/"
+cp docs/PACKAGE_SUBMISSION_STATUS.json docs/ECOSYSTEM_ADOPTION.md "$RC_DIR/docs/"
+cp docs/FIRST_30_MINUTES.md docs/MAINTENANCE.md "$RC_DIR/docs/"
 for release_doc in docs/RELEASE_*.md; do
     [[ -f "$release_doc" ]] && cp "$release_doc" "$RC_DIR/docs/"
 done
@@ -491,6 +501,8 @@ cp scripts/release_gate.sh scripts/release_candidate.sh scripts/promote_release.
 cp scripts/release_launch_check.sh scripts/release_launch_check.py "$RC_DIR/scripts/"
 cp scripts/trust_release.sh scripts/trust_release.py scripts/publish_release.sh "$RC_DIR/scripts/"
 cp scripts/package_channels.sh scripts/package_channels.py "$RC_DIR/scripts/"
+cp scripts/package_submission_check.sh scripts/package_submission_check.py "$RC_DIR/scripts/"
+cp scripts/external_install_check.sh scripts/external_install_check.py "$RC_DIR/scripts/"
 cp scripts/assemble_matrix_release.sh scripts/assemble_matrix_release.py "$RC_DIR/scripts/"
 cp scripts/validate_release.sh scripts/validate_release.py "$RC_DIR/scripts/"
 cp scripts/verify_hosted_release.sh scripts/verify_hosted_release.py "$RC_DIR/scripts/"

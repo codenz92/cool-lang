@@ -49,6 +49,8 @@ jobs:
             scripts/publish_release.sh \
             scripts/trust_release.sh \
             scripts/package_channels.sh \
+            scripts/package_submission_check.sh \
+            scripts/external_install_check.sh \
             scripts/assemble_matrix_release.sh \
             scripts/validate_release.sh \
             scripts/verify_hosted_release.sh \
@@ -60,6 +62,8 @@ jobs:
           python3 -m py_compile \
             scripts/trust_release.py \
             scripts/package_channels.py \
+            scripts/package_submission_check.py \
+            scripts/external_install_check.py \
             scripts/assemble_matrix_release.py \
             scripts/validate_release.py \
             scripts/verify_hosted_release.py \
@@ -85,6 +89,14 @@ jobs:
             --require-platform macos-arm64 \
             --report "dist/validation/$VERSION/distribution-readiness.json" \
             --write-checklist "dist/validation/$VERSION/DISTRIBUTION_CHECKLIST.md"
+          bash scripts/package_submission_check.sh \
+            --version "$VERSION" \
+            --report "dist/validation/$VERSION/package-submission.json" \
+            --write-checklist "dist/validation/$VERSION/PACKAGE_SUBMISSION_CHECKLIST.md"
+          bash scripts/external_install_check.sh \
+            --version "$VERSION" \
+            --report "dist/validation/$VERSION/external-install.json" \
+            --write-plan "dist/validation/$VERSION/EXTERNAL_INSTALL_PLAN.md"
           bash scripts/validate_release.sh \
             --version "$VERSION" \
             --platform macos-arm64 \
@@ -111,6 +123,17 @@ jobs:
             --install-smoke \
             --install-smoke-platform macos-arm64 \
             --report "dist/hosted-validation/$VERSION/hosted-release-validation.json"
+          bash scripts/external_install_check.sh \
+            --version "$VERSION" \
+            --base-url "file://$MIRROR" \
+            --platform macos-arm64 \
+            --require-platform macos-arm64 \
+            --run-hosted \
+            --install-smoke \
+            --install-smoke-platform macos-arm64 \
+            --hosted-report "dist/hosted-validation/$VERSION/external-install-hosted-release.json" \
+            --report "dist/validation/$VERSION/external-install-hosted.json" \
+            --write-plan "dist/validation/$VERSION/EXTERNAL_INSTALL_HOSTED_PLAN.md"
 
       - name: Upload validation reports
         if: always()

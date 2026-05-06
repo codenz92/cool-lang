@@ -196,7 +196,7 @@ PackageIdentifier: Codenz.Cool
 PackageVersion: {version}
 DefaultLocale: en-US
 ManifestType: version
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
 """, encoding="utf-8")
 
     (winget_root / "Codenz.Cool.locale.en-US.yaml").write_text(f"""# Created by scripts/package_channels.py
@@ -204,17 +204,21 @@ PackageIdentifier: Codenz.Cool
 PackageVersion: {version}
 PackageLocale: en-US
 Publisher: Codenz
+PublisherUrl: https://github.com/codenz92
 PackageName: Cool
 License: MIT
+LicenseUrl: https://github.com/codenz92/cool-lang/blob/master/LICENSE
 ShortDescription: Cool programming language compiler and runtime.
 PackageUrl: https://github.com/codenz92/cool-lang
 ManifestType: defaultLocale
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
 """, encoding="utf-8")
 
     (winget_root / "Codenz.Cool.installer.yaml").write_text(f"""# Created by scripts/package_channels.py
 PackageIdentifier: Codenz.Cool
 PackageVersion: {version}
+Platform:
+  - Windows.Desktop
 InstallerType: zip
 NestedInstallerType: portable
 NestedInstallerFiles:
@@ -225,7 +229,7 @@ Installers:
     InstallerUrl: {installer_url}
     InstallerSha256: {installer_sha}
 ManifestType: installer
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
 """, encoding="utf-8")
     return winget_root
 

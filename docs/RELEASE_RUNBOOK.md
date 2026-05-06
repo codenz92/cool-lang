@@ -20,8 +20,9 @@ bash scripts/release_gate.sh
 ```
 
 The release gate includes the conformance suite, Cool-written release audit, and
-Phase 28 launch-identity check. To capture separate compatibility and launch
-reports for release evidence, run:
+Phase 28 launch-identity check. Phase 29 package submission and external install
+checks run after package channels are generated. To capture separate
+compatibility and launch reports for release evidence, run:
 
 ```bash
 VERSION=1.1.0
@@ -53,6 +54,14 @@ bash scripts/distribution_readiness.sh \
   --require-platform macos-arm64 \
   --report "dist/validation/$VERSION/distribution-readiness.json" \
   --write-checklist "dist/validation/$VERSION/DISTRIBUTION_CHECKLIST.md"
+bash scripts/package_submission_check.sh \
+  --version "$VERSION" \
+  --report "dist/validation/$VERSION/package-submission.json" \
+  --write-checklist "dist/validation/$VERSION/PACKAGE_SUBMISSION_CHECKLIST.md"
+bash scripts/external_install_check.sh \
+  --version "$VERSION" \
+  --report "dist/validation/$VERSION/external-install.json" \
+  --write-plan "dist/validation/$VERSION/EXTERNAL_INSTALL_PLAN.md"
 bash scripts/validate_release.sh \
   --version "$VERSION" \
   --require-trust \
@@ -150,6 +159,8 @@ Before closing the release checklist, record:
 - `release-launch.json` and `RELEASE_LAUNCH_CHECKLIST.md` artifacts.
 - `conformance-validation.json` or `conformance-suite.json` workflow artifact.
 - `distribution-readiness.json` and `DISTRIBUTION_CHECKLIST.md` artifacts.
+- `package-submission.json` and `PACKAGE_SUBMISSION_CHECKLIST.md` artifacts.
+- `external-install.json` and `EXTERNAL_INSTALL_PLAN.md` artifacts.
 - `hosted-release-validation.json` workflow artifact.
 - Package-channel archive name and hash.
 - Homebrew, Winget, and Debian/apt submission links or explicit deferrals.

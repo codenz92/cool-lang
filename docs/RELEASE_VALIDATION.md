@@ -18,6 +18,20 @@ bash scripts/release_launch_check.sh \
   --write-checklist dist/validation/1.1.0/RELEASE_LAUNCH_CHECKLIST.md
 ```
 
+Phase 29 adds package submission and external install checks after package
+channels are generated:
+
+```bash
+bash scripts/package_submission_check.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-submission.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_CHECKLIST.md
+bash scripts/external_install_check.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/external-install.json \
+  --write-plan dist/validation/1.1.0/EXTERNAL_INSTALL_PLAN.md
+```
+
 ## Validate A Promoted Release
 
 ```bash
@@ -108,6 +122,27 @@ bash scripts/distribution_readiness.sh \
   --require-platform windows-x86_64 \
   --report dist/validation/1.1.0/distribution-readiness.json \
   --write-checklist dist/validation/1.1.0/DISTRIBUTION_CHECKLIST.md
+```
+
+The Phase 29 submission and external install checks emit package-manager
+readiness and post-submit install evidence:
+
+```bash
+bash scripts/package_submission_check.sh \
+  --version 1.1.0 \
+  --require-channel homebrew \
+  --require-channel winget \
+  --require-channel debian \
+  --report dist/validation/1.1.0/package-submission.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_CHECKLIST.md
+bash scripts/external_install_check.sh \
+  --version 1.1.0 \
+  --require-platform linux-x86_64 \
+  --require-platform macos-x86_64 \
+  --require-platform macos-arm64 \
+  --require-platform windows-x86_64 \
+  --report dist/validation/1.1.0/external-install.json \
+  --write-plan dist/validation/1.1.0/EXTERNAL_INSTALL_PLAN.md
 ```
 
 ## Hosted Release Verification

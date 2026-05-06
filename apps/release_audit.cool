@@ -5,7 +5,7 @@ import sys
 import toml
 
 def usage():
-    print("release_audit v1.1 — audit Cool repo release and adoption health")
+    print("release_audit v1.2 — audit Cool repo release and adoption health")
     print("  cool apps/release_audit.cool [--root PATH] [--json] [--strict]")
 
 def join(root, rel):
@@ -65,6 +65,10 @@ def audit(root, strict=false):
         "docs/NATIVE_COMPILER.md",
         "docs/STDLIB_OVERVIEW.md",
         "docs/PACKAGE_MANAGER_SUBMISSIONS.md",
+        "docs/PACKAGE_SUBMISSION_STATUS.json",
+        "docs/ECOSYSTEM_ADOPTION.md",
+        "docs/FIRST_30_MINUTES.md",
+        "docs/MAINTENANCE.md",
         "docs/PACKAGE_CHANNELS.md",
         "docs/RELEASE_RUNBOOK.md",
         "docs/RELEASE_VALIDATION.md",
@@ -74,12 +78,15 @@ def audit(root, strict=false):
         "scripts/conformance_suite.py",
         "scripts/release_launch_check.py",
         "scripts/distribution_readiness.py",
+        "scripts/package_submission_check.py",
+        "scripts/external_install_check.py",
         "scripts/performance_baseline.py",
         "scripts/release_gate.sh",
         "scripts/release_candidate.sh",
         "scripts/validate_release.py",
         "apps/release_audit.cool",
         ".github/workflows/conformance-suite.yml",
+        ".github/workflows/ecosystem-adoption.yml",
         ".github/workflows/release-validation.yml",
         ".github/workflows/release-matrix.yml",
     ]:
@@ -92,9 +99,13 @@ def audit(root, strict=false):
     check_contains(checks, root, "scripts/release_candidate.sh", "release_launch_check.py")
     check_contains(checks, root, "scripts/validate_release.py", "distribution_readiness.py")
     check_contains(checks, root, "scripts/validate_release.py", "PACKAGE_MANAGER_SUBMISSIONS.md")
+    check_contains(checks, root, "scripts/validate_release.py", "PACKAGE_SUBMISSION_STATUS.json")
     check_contains(checks, root, ".github/workflows/release-validation.yml", "release_launch_check.sh")
+    check_contains(checks, root, ".github/workflows/release-validation.yml", "package_submission_check.sh")
+    check_contains(checks, root, ".github/workflows/ecosystem-adoption.yml", "external_install_check.sh")
     check_contains(checks, root, ".github/workflows/release-matrix.yml", "release_launch_check.sh")
-    check_contains(checks, root, "ROADMAP.md", "Phase 28")
+    check_contains(checks, root, ".github/workflows/release-matrix.yml", "package_submission_check.sh")
+    check_contains(checks, root, "ROADMAP.md", "Phase 29")
 
     cargo_path = join(root, "Cargo.toml")
     if os["exists"](cargo_path):
@@ -120,7 +131,15 @@ def audit(root, strict=false):
             "docs/DISTRIBUTION.md",
             "docs/DOGFOODING.md",
             "docs/PACKAGE_MANAGER_SUBMISSIONS.md",
+            "docs/PACKAGE_SUBMISSION_STATUS.json",
+            "docs/ECOSYSTEM_ADOPTION.md",
+            "docs/FIRST_30_MINUTES.md",
+            "docs/MAINTENANCE.md",
             "docs/RELEASE_1_1_0.md",
+            "scripts/package_submission_check.sh",
+            "scripts/package_submission_check.py",
+            "scripts/external_install_check.sh",
+            "scripts/external_install_check.py",
         ]:
             check_file(checks, root, rel)
 

@@ -3,6 +3,16 @@
 This checklist starts after the public GitHub Release assets exist. Do not
 submit package-manager metadata from local `dist/` output or workflow artifacts.
 
+Phase 29 adds two maintained gates on top of the Phase 27/28 release checks:
+
+```bash
+bash scripts/package_submission_check.sh --version 1.1.0
+bash scripts/external_install_check.sh --version 1.1.0
+```
+
+Track channel state in `docs/PACKAGE_SUBMISSION_STATUS.json` and record final
+links in the versioned release record.
+
 ## Pre-Submission Gate
 
 Run the launch, validation, distribution, and hosted checks for the release:
@@ -41,7 +51,12 @@ Submission metadata must point at immutable URLs under:
 https://github.com/codenz92/cool-lang/releases/download/v<version>/
 ```
 
+Every generated package-manager record must carry the hosted SHA256 or SHA-256
+value for the exact immutable release asset it installs.
+
 ## Homebrew
+
+Reference: https://docs.brew.sh/Formula-Cookbook
 
 Source file:
 
@@ -56,8 +71,17 @@ Before opening a tap pull request:
 - Keep the formula smoke test as `system "#{bin}/cool", "help"`.
 - Include the release record, hosted verification report, and distribution
   readiness report in the pull request notes.
+- Before opening a pull request, run:
+
+```bash
+brew audit --strict --online --formula dist/channels/<version>/homebrew/cool.rb
+brew install --formula dist/channels/<version>/homebrew/cool.rb
+cool help
+```
 
 ## Winget
+
+Reference: https://learn.microsoft.com/en-us/windows/package-manager/package/manifest
 
 Source tree:
 
@@ -71,8 +95,17 @@ Before submission:
 - Confirm `InstallerType: zip` and `NestedInstallerType: portable` are present.
 - Confirm `RelativeFilePath` points at `cool-<version>-windows-x86_64/bin/cool.exe`.
 - Confirm the installer URL and hash match the hosted Windows zip asset.
+- Before submission, run:
+
+```powershell
+winget validate dist/channels/<version>/winget/Codenz.Cool/<version>
+winget install --manifest dist/channels/<version>/winget/Codenz.Cool/<version> --accept-source-agreements --accept-package-agreements
+cool help
+```
 
 ## Debian And Apt
+
+Reference: https://www.debian.org/doc/debian-policy/
 
 Source tree:
 
@@ -87,6 +120,13 @@ Before publishing or handing the output to downstream packaging:
 - Confirm the `Packages` entry has the hosted package version and SHA-256.
 - Host the apt tree on an immutable release mirror or use it as packaging input;
   do not point users at transient workflow downloads.
+- Before publishing a mirror or handing the package to downstream maintainers,
+  run:
+
+```bash
+dpkg-deb --info dist/channels/<version>/apt/pool/main/c/cool/cool_<version>_amd64.deb
+gzip -dc dist/channels/<version>/apt/dists/stable/main/binary-amd64/Packages.gz | grep -A8 '^Package: cool$'
+```
 
 ## Final Record
 

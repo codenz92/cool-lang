@@ -76,6 +76,8 @@ bash scripts/distribution_readiness.sh \
   --require-platform macos-x86_64 \
   --require-platform macos-arm64 \
   --require-platform windows-x86_64
+bash scripts/package_submission_check.sh --version 1.1.0
+bash scripts/external_install_check.sh --version 1.1.0
 ```
 
 ## Channel Notes
@@ -85,8 +87,9 @@ portable `bin/cool.exe` nested installer path. Debian/apt metadata is generated
 from the Linux x86_64 tarball into a simple `.deb` plus `Packages` indexes.
 
 For public package-index submissions, use hosted GitHub Release URLs, run
-`scripts/release_launch_check.sh` and `scripts/distribution_readiness.sh`, and
-verify the uploaded channel archive with
+`scripts/release_launch_check.sh`, `scripts/distribution_readiness.sh`,
+`scripts/package_submission_check.sh`, and `scripts/external_install_check.sh`,
+and verify the uploaded channel archive with
 `verify_hosted_release.sh --check-channel-archive` before submitting. The
 adoption checklist in `docs/ADOPTION.md` and package-manager checklist in
 `docs/PACKAGE_MANAGER_SUBMISSIONS.md` cover the post-1.0 package-channel

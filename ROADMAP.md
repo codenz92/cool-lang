@@ -30,6 +30,7 @@
 8. Post-1.0 compatibility, conformance, documentation, adoption, and performance evidence loops
 9. Distribution readiness, structured documentation, and Cool-written dogfood release auditing
 10. Public `v1.1.0` launch preparation with version alignment, launch evidence, and package-manager submission gates
+11. Package-manager submission readiness, external install verification, and first-user adoption evidence
 
 ## Legend
 
@@ -894,6 +895,48 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 
 ---
 
+## Phase 29 — Ecosystem Publication And Adoption Loop ✅ Complete
+
+> Goal: turn the published `v1.1.0` release into package-manager-ready metadata,
+> external install evidence, and a maintained first-user adoption path.
+
+### Package-Manager Submission Gate
+
+- [x] `scripts/package_submission_check.sh` / `.py` validate generated
+  Homebrew, Winget, and Debian/apt channel metadata before public submission
+- [x] The submission gate checks immutable GitHub Release URLs, SHA-256 values,
+  current Winget manifest schema, Homebrew audit/test expectations, Debian
+  control/index metadata, official submission docs, and structured channel
+  status
+- [x] `docs/PACKAGE_SUBMISSION_STATUS.json` tracks Homebrew, Winget, and
+  Debian/apt readiness, submission, publication, and blocker state
+- [x] Package submission reports and Markdown checklists can be written under
+  `dist/validation/<version>/`
+
+### External Install Evidence
+
+- [x] `scripts/external_install_check.sh` / `.py` records direct hosted,
+  Homebrew, Winget, and Debian/apt install verification plans
+- [x] The external install checker can delegate to hosted release verification
+  with required-platform and install-smoke coverage when public assets or a
+  mirror are available
+- [x] Release validation, matrix assembly, published-release, matrix smoke, and
+  a dedicated ecosystem-adoption workflow run the Phase 29 checks
+
+### Adoption And Maintenance
+
+- [x] `docs/ECOSYSTEM_ADOPTION.md` documents the package-manager publication
+  and post-submit verification loop
+- [x] `docs/FIRST_30_MINUTES.md` plus `examples/first_30_minutes/` provide a
+  maintained new-user path through interpreter, VM, check, native build, and
+  binary execution
+- [x] `docs/MAINTENANCE.md` defines `1.1.x` hotfix scope, package-channel
+  rollback rules, and compatibility-exception evidence
+- [x] `apps/release_audit.cool --strict` checks the Phase 29 docs, scripts,
+  workflow wiring, and roadmap coverage from Cool code
+
+---
+
 ## Summary
 
 | Phase | Status |
@@ -926,3 +969,4 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 | 26 — Post-1.0 Adoption And Compatibility | ✅ Complete |
 | 27 — Distribution, Documentation, And Dogfooding | ✅ Complete |
 | 28 — Public 1.1.0 Release Launch | ✅ Complete |
+| 29 — Ecosystem Publication And Adoption Loop | ✅ Complete |

@@ -40,6 +40,17 @@ Release state: published, latest, public, hosted-verified.
 | Hosted public release verification | Passed | `/tmp/cool-1.1.0-public-hosted-release-validation.json` |
 | Public installer audit | Passed | `verify_hosted_release.sh --install-smoke --install-smoke-platform macos-arm64` |
 
+## Package-Manager Follow-Up
+
+Phase 29 records package-manager submission readiness separately from the
+release upload:
+
+- Status file: `docs/PACKAGE_SUBMISSION_STATUS.json`
+- Submission gate: `scripts/package_submission_check.sh --version 1.1.0`
+- External install plan: `scripts/external_install_check.sh --version 1.1.0`
+- Current channel state: Homebrew, Winget, and Debian/apt are `ready` pending
+  public package-index submission links.
+
 ## Hosted Verification
 
 The public hosted verifier checked the release at

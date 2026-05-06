@@ -884,8 +884,9 @@ bash scripts/distribution_readiness.sh --version 1.1.0
 
 Longer documentation now lives under [`docs/`](docs/README.md), including
 language reference, native compiler, stdlib overview, compatibility policy,
-conformance, distribution, package-manager submissions, dogfooding, adoption,
-install, support, release validation, and release trust operations.
+conformance, distribution, package-manager submissions, ecosystem adoption,
+first-30-minutes onboarding, maintenance, dogfooding, adoption, install,
+support, release validation, and release trust operations.
 
 ### Release Gate
 
@@ -914,8 +915,9 @@ static diagnostics, and emits JSON reports for CI or release evidence. See
 
 ### Distribution And Dogfooding
 
-Phase 28 adds a launch-identity check on top of the package-channel readiness
-audit and Cool-written release audit app:
+Phase 29 adds package-manager submission and external install checks on top of
+the package-channel readiness audit, launch-identity check, and Cool-written
+release audit app:
 
 ```bash
 bash scripts/release_launch_check.sh \
@@ -932,13 +934,28 @@ bash scripts/distribution_readiness.sh \
   --require-platform macos-arm64 \
   --require-platform windows-x86_64
 
+bash scripts/package_submission_check.sh \
+  --version 1.1.0 \
+  --require-channel homebrew \
+  --require-channel winget \
+  --require-channel debian
+
+bash scripts/external_install_check.sh \
+  --version 1.1.0 \
+  --require-platform linux-x86_64 \
+  --require-platform macos-x86_64 \
+  --require-platform macos-arm64 \
+  --require-platform windows-x86_64
+
 ./target/release/cool apps/release_audit.cool --strict --json
 ```
 
 See [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) and
 [`docs/DOGFOODING.md`](docs/DOGFOODING.md). Package-manager submission steps
 are tracked in
-[`docs/PACKAGE_MANAGER_SUBMISSIONS.md`](docs/PACKAGE_MANAGER_SUBMISSIONS.md).
+[`docs/PACKAGE_MANAGER_SUBMISSIONS.md`](docs/PACKAGE_MANAGER_SUBMISSIONS.md),
+[`docs/PACKAGE_SUBMISSION_STATUS.json`](docs/PACKAGE_SUBMISSION_STATUS.json),
+and [`docs/ECOSYSTEM_ADOPTION.md`](docs/ECOSYSTEM_ADOPTION.md).
 
 ### Release Candidate Build
 

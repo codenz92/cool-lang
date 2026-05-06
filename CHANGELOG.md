@@ -2,6 +2,17 @@
 
 All notable changes to the Cool language project.
 
+## [Unreleased]
+
+### Phase 29 — Ecosystem Publication And Adoption Loop
+
+- Added `scripts/package_submission_check.sh` / `.py` to validate generated Homebrew, Winget, and Debian/apt metadata before package-index submission, including immutable release URLs, SHA-256 values, current Winget manifest schema, Homebrew audit/test expectations, Debian control/index metadata, official submission docs, and structured submission status
+- Added `scripts/external_install_check.sh` / `.py` to record external install verification plans and optionally delegate to hosted release verification with required-platform and install-smoke coverage
+- Added `docs/ECOSYSTEM_ADOPTION.md`, `docs/FIRST_30_MINUTES.md`, `docs/MAINTENANCE.md`, and `docs/PACKAGE_SUBMISSION_STATUS.json` for package-manager publication, first-user adoption, hotfix policy, package-channel rollback, and channel status tracking
+- Added `examples/first_30_minutes/` as a maintained adoption smoke path that exercises source execution, VM execution, static checking, native build, and native binary execution
+- Wired Phase 29 checks into release validation, release matrix assembly, published-release validation, synthetic matrix smoke, and a dedicated `Ecosystem Adoption` workflow
+- Updated release candidates, promoted assets, matrix assembly, validation, and the Cool-written release audit app to package and verify the Phase 29 docs/scripts
+
 ## [1.1.0] - 2026-05-06 - Phase 28 Complete
 
 ### Phase 28 — Public 1.1.0 Release Launch
@@ -618,5 +629,6 @@ The interpreter and bytecode VM now share full context-manager cleanup semantics
 
 ---
 
+[Unreleased]: https://github.com/codenz92/cool-lang/compare/v1.1.0...HEAD
 [1.1.0]: https://github.com/codenz92/cool-lang/releases/tag/v1.1.0
 [1.0.0]: https://github.com/codenz92/cool-lang/releases/tag/v1.0.0
