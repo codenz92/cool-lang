@@ -32,6 +32,16 @@ bash scripts/external_install_check.sh \
   --write-plan dist/validation/1.1.0/EXTERNAL_INSTALL_PLAN.md
 ```
 
+Phase 30 adds package publication evidence checks after the status ledger is
+updated:
+
+```bash
+bash scripts/package_publication_check.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-publication.json \
+  --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
+```
+
 ## Validate A Promoted Release
 
 ```bash
@@ -145,6 +155,15 @@ bash scripts/external_install_check.sh \
   --write-plan dist/validation/1.1.0/EXTERNAL_INSTALL_PLAN.md
 ```
 
+The Phase 30 publication check emits the package-manager status ledger report:
+
+```bash
+bash scripts/package_publication_check.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-publication.json \
+  --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
+```
+
 ## Hosted Release Verification
 
 After assets are uploaded to a public GitHub Release or mirror, verify the
@@ -188,10 +207,10 @@ bash scripts/smoke_matrix_release.sh --version 1.1.0
 The smoke driver repacks the host payload into Linux, macOS Intel, macOS Arm, and
 Windows x64-shaped artifacts, assembles them with `assemble_matrix_release.sh`,
 generates trust metadata, generates package channels with all required-platform
-checks, and runs `validate_release.sh` against the resulting multi-platform
-release. This does not replace a real tagged matrix release, but it catches
-metadata, channel, checksum, archive-layout, and packaging regressions before the
-tag is cut.
+checks, runs package submission/external install/publication checks, and runs
+`validate_release.sh` against the resulting multi-platform release. This does
+not replace a real tagged matrix release, but it catches metadata, channel,
+checksum, archive-layout, and packaging regressions before the tag is cut.
 
 ## Release Checklist
 
@@ -203,6 +222,9 @@ tag is cut.
 6. `bash scripts/promote_release.sh --version <version>`
 7. `bash scripts/package_channels.sh generate --version <version>`
 8. `bash scripts/distribution_readiness.sh --version <version> --report dist/validation/<version>/distribution-readiness.json`
-9. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
-10. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
-11. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.
+9. `bash scripts/package_submission_check.sh --version <version> --report dist/validation/<version>/package-submission.json`
+10. `bash scripts/external_install_check.sh --version <version> --report dist/validation/<version>/external-install.json`
+11. `bash scripts/package_publication_check.sh --version <version> --report dist/validation/<version>/package-publication.json`
+12. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
+13. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
+14. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.

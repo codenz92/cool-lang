@@ -195,12 +195,16 @@ def validate(args):
         "scripts/release_launch_check.sh",
         "scripts/release_launch_check.py",
         "scripts/distribution_readiness.py",
+        "scripts/package_publication_check.sh",
+        "scripts/package_publication_check.py",
         "scripts/validate_release.py",
         "scripts/release_candidate.sh",
         "apps/release_audit.cool",
+        "docs/PACKAGE_PUBLICATION.md",
         ".github/workflows/release-validation.yml",
         ".github/workflows/release-matrix.yml",
         ".github/workflows/published-release.yml",
+        ".github/workflows/package-publication.yml",
     ]:
         require_file(checks, rel)
 
@@ -210,14 +214,20 @@ def validate(args):
         ("scripts/release_candidate.sh", "RELEASE_*.md", "release candidates package release records"),
         ("scripts/validate_release.py", "PACKAGE_MANAGER_SUBMISSIONS.md", "release validation requires package submissions doc"),
         ("scripts/validate_release.py", "RELEASE_", "release validation requires versioned release record"),
-        ("apps/release_audit.cool", "Phase 29", "release audit checks current roadmap phase"),
+        ("apps/release_audit.cool", "Phase 30", "release audit checks current roadmap phase"),
+        ("scripts/release_gate.sh", "package_publication_check.sh", "release gate runs publication check"),
         (".github/workflows/release-validation.yml", "release_launch_check.sh", "release validation workflow runs launch check"),
+        (".github/workflows/release-validation.yml", "package_publication_check.sh", "release validation workflow runs publication check"),
         (".github/workflows/release-matrix.yml", "release_launch_check.sh", "release matrix workflow runs launch check"),
+        (".github/workflows/release-matrix.yml", "package_publication_check.sh", "release matrix workflow runs publication check"),
         (".github/workflows/published-release.yml", "release_launch_check.sh", "published-release workflow runs launch check"),
+        (".github/workflows/published-release.yml", "package_publication_check.sh", "published-release workflow runs publication check"),
         ("docs/RELEASE_RUNBOOK.md", "release_launch_check.sh", "runbook includes launch check"),
         ("docs/RELEASE_VALIDATION.md", "release_launch_check.sh", "release validation docs include launch check"),
+        ("docs/RELEASE_VALIDATION.md", "package_publication_check.sh", "release validation docs include publication check"),
         ("docs/README.md", "PACKAGE_MANAGER_SUBMISSIONS.md", "docs index links package submissions"),
-        ("ROADMAP.md", "Phase 28", "roadmap records Phase 28"),
+        ("docs/README.md", "PACKAGE_PUBLICATION.md", "docs index links package publication"),
+        ("ROADMAP.md", "Phase 30", "roadmap records Phase 30"),
     ]:
         check_contains(checks, rel, needle, label)
 

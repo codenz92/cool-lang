@@ -78,6 +78,7 @@ bash scripts/distribution_readiness.sh \
   --require-platform windows-x86_64
 bash scripts/package_submission_check.sh --version 1.1.0
 bash scripts/external_install_check.sh --version 1.1.0
+bash scripts/package_publication_check.sh --version 1.1.0
 ```
 
 ## Channel Notes
@@ -88,12 +89,12 @@ from the Linux x86_64 tarball into a simple `.deb` plus `Packages` indexes.
 
 For public package-index submissions, use hosted GitHub Release URLs, run
 `scripts/release_launch_check.sh`, `scripts/distribution_readiness.sh`,
-`scripts/package_submission_check.sh`, and `scripts/external_install_check.sh`,
-and verify the uploaded channel archive with
-`verify_hosted_release.sh --check-channel-archive` before submitting. The
-adoption checklist in `docs/ADOPTION.md` and package-manager checklist in
-`docs/PACKAGE_MANAGER_SUBMISSIONS.md` cover the post-1.0 package-channel
-workflow.
+`scripts/package_submission_check.sh`, `scripts/external_install_check.sh`, and
+`scripts/package_publication_check.sh`, and verify the uploaded channel archive
+with `verify_hosted_release.sh --check-channel-archive` before submitting. The
+adoption checklist in `docs/ADOPTION.md`, package-manager checklist in
+`docs/PACKAGE_MANAGER_SUBMISSIONS.md`, and publication ledger in
+`docs/PACKAGE_PUBLICATION.md` cover the post-1.0 package-channel workflow.
 
 See `docs/RELEASE_VALIDATION.md` for the full pre-publish validation checklist
 and synthetic matrix smoke test.

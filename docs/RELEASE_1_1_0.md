@@ -43,11 +43,13 @@ Release state: published, latest, public, hosted-verified.
 ## Package-Manager Follow-Up
 
 Phase 29 records package-manager submission readiness separately from the
-release upload:
+release upload. Phase 30 records publication status and install evidence as
+those package-manager submissions move through review:
 
 - Status file: `docs/PACKAGE_SUBMISSION_STATUS.json`
 - Submission gate: `scripts/package_submission_check.sh --version 1.1.0`
 - External install plan: `scripts/external_install_check.sh --version 1.1.0`
+- Publication gate: `scripts/package_publication_check.sh --version 1.1.0`
 - Current channel state: Homebrew, Winget, and Debian/apt are `ready` pending
   public package-index submission links.
 

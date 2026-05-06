@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "updated_at": "2026-05-06",
+  "schema_version": 2,
+  "updated_at": "2026-05-07",
   "package": {
     "name": "cool",
     "current_release": "1.1.0"
@@ -13,31 +13,66 @@
       "published",
       "blocked",
       "deferred"
-    ]
+    ],
+    "official_references": {
+      "homebrew": [
+        "https://docs.brew.sh/Formula-Cookbook",
+        "https://docs.brew.sh/Acceptable-Formulae"
+      ],
+      "winget": [
+        "https://learn.microsoft.com/en-us/windows/package-manager/package/manifest",
+        "https://learn.microsoft.com/en-us/windows/package-manager/package/repository"
+      ],
+      "debian": [
+        "https://www.debian.org/doc/debian-policy/",
+        "https://www.debian.org/doc/debian-policy/ch-controlfields.html"
+      ]
+    }
   },
   "channels": {
     "homebrew": {
       "status": "ready",
       "source": "dist/channels/1.1.0/homebrew/cool.rb",
       "verification": "brew audit --strict --online --formula dist/channels/1.1.0/homebrew/cool.rb",
+      "submission_target": "Homebrew tap or homebrew/core after notability and policy review",
       "submission_url": "",
       "published_url": "",
+      "submitted_at": "",
+      "published_at": "",
+      "verified_at": "",
+      "public_install_command": "",
+      "external_install_report": "",
+      "blockers": [],
       "notes": "Submit after hosted release verification and package submission check pass."
     },
     "winget": {
       "status": "ready",
       "source": "dist/channels/1.1.0/winget/Codenz.Cool/1.1.0",
       "verification": "winget validate dist/channels/1.1.0/winget/Codenz.Cool/1.1.0",
+      "submission_target": "microsoft/winget-pkgs pull request",
       "submission_url": "",
       "published_url": "",
+      "submitted_at": "",
+      "published_at": "",
+      "verified_at": "",
+      "public_install_command": "",
+      "external_install_report": "",
+      "blockers": [],
       "notes": "Submit after Windows zip URL/hash are verified from the public release."
     },
     "debian": {
       "status": "ready",
       "source": "dist/channels/1.1.0/apt",
       "verification": "dpkg-deb --info dist/channels/1.1.0/apt/pool/main/c/cool/cool_1.1.0_amd64.deb",
+      "submission_target": "Generated apt mirror or downstream Debian packaging workflow",
       "submission_url": "",
       "published_url": "",
+      "submitted_at": "",
+      "published_at": "",
+      "verified_at": "",
+      "public_install_command": "",
+      "external_install_report": "",
+      "blockers": [],
       "notes": "Use generated apt tree as mirror input or downstream packaging input after hosted verification."
     }
   }

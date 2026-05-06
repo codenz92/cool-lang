@@ -4,7 +4,8 @@ Phase 27 makes package-channel publication a maintained workflow instead of a
 manual follow-up after GitHub Release upload. Phase 28 adds a launch check and
 package-manager submission checklist before metadata goes to public indexes.
 Phase 29 adds package submission and external install checks after channels are
-generated.
+generated. Phase 30 adds publication-state evidence checks after package-index
+submission or publication changes.
 
 ## Release Asset Contract
 
@@ -76,6 +77,15 @@ This validates the generated Homebrew formula, Winget portable manifests,
 Debian/apt package/index metadata, official submission checklist references, and
 `docs/PACKAGE_SUBMISSION_STATUS.json`.
 
+After updating the package status ledger, run the Phase 30 publication check:
+
+```bash
+bash scripts/package_publication_check.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-publication.json \
+  --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
+```
+
 ## Hosted Verification
 
 After uploading release assets, verify the hosted package-channel archive:
@@ -107,5 +117,6 @@ If a package index requires a different layout, add that layout to
 `scripts/package_channels.py`, add validation to `scripts/validate_release.py`
 or `scripts/distribution_readiness.py`, and document the new contract here.
 See `docs/PACKAGE_MANAGER_SUBMISSIONS.md` for the public Homebrew, Winget, and
-Debian/apt submission checklist. See `docs/ECOSYSTEM_ADOPTION.md` for the
-post-submit external install loop.
+Debian/apt submission checklist. See `docs/PACKAGE_PUBLICATION.md` for the
+publication ledger and `docs/ECOSYSTEM_ADOPTION.md` for the post-submit
+external install loop.

@@ -23,6 +23,7 @@ bash scripts/release_gate.sh
 bash scripts/release_launch_check.sh --version <version>
 bash scripts/package_submission_check.sh --version <version>
 bash scripts/external_install_check.sh --version <version>
+bash scripts/package_publication_check.sh --version <version>
 ```
 
 When public assets exist, rerun hosted verification with `--run-hosted` through
@@ -41,7 +42,9 @@ bad.
    and SHA-256.
 3. Mark the affected channel as `blocked` in
    `docs/PACKAGE_SUBMISSION_STATUS.json` with a short note.
-4. Open a hotfix issue and link package-manager pull requests or mirror changes.
+4. Run `scripts/package_publication_check.sh` so the blocked state is captured
+   in release evidence.
+5. Open a hotfix issue and link package-manager pull requests or mirror changes.
 
 ## Compatibility Exceptions
 

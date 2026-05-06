@@ -31,6 +31,7 @@
 9. Distribution readiness, structured documentation, and Cool-written dogfood release auditing
 10. Public `v1.1.0` launch preparation with version alignment, launch evidence, and package-manager submission gates
 11. Package-manager submission readiness, external install verification, and first-user adoption evidence
+12. Package-manager publication-state tracking, public install evidence, and release ledger validation
 
 ## Legend
 
@@ -937,6 +938,45 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 
 ---
 
+## Phase 30 — Public Package Publication Evidence ✅ Complete
+
+> Goal: move package-manager work from local readiness to tracked submission,
+> publication, and external install evidence without pretending local metadata
+> validation is the same as public availability.
+
+### Publication Ledger
+
+- [x] `docs/PACKAGE_SUBMISSION_STATUS.json` uses schema version 2 with per-channel
+  submission targets, submission/publication URLs, dates, public install
+  commands, external install report references, and blocker tracking
+- [x] The ledger records official Homebrew, Winget, and Debian policy references
+  used when reviewing package-manager submissions
+- [x] `docs/PACKAGE_PUBLICATION.md` defines `ready`, `submitted`, `published`,
+  `blocked`, and `deferred` states plus the evidence required to move between
+  them
+
+### Publication Gate
+
+- [x] `scripts/package_publication_check.sh` / `.py` validate the publication
+  ledger, official references, required channel states, submitted/published
+  evidence URLs, public install commands, and external install report links
+- [x] The publication gate emits JSON reports and Markdown evidence files under
+  `dist/validation/<version>/`
+- [x] The gate can require individual channels to be `submitted` or `published`
+  and can require all published channels to have external install evidence
+
+### Release And CI Wiring
+
+- [x] Release validation, release matrix, published-release validation,
+  synthetic matrix smoke, and a dedicated package-publication workflow run the
+  Phase 30 checks
+- [x] Release candidates, promoted release assets, matrix assembly, and release
+  validation package and verify the Phase 30 docs/scripts
+- [x] `apps/release_audit.cool --strict` checks the Phase 30 docs, scripts,
+  workflow wiring, and roadmap coverage from Cool code
+
+---
+
 ## Summary
 
 | Phase | Status |
@@ -970,3 +1010,4 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 | 27 — Distribution, Documentation, And Dogfooding | ✅ Complete |
 | 28 — Public 1.1.0 Release Launch | ✅ Complete |
 | 29 — Ecosystem Publication And Adoption Loop | ✅ Complete |
+| 30 — Public Package Publication Evidence | ✅ Complete |

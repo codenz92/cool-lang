@@ -1,10 +1,12 @@
 # Post-1.0 Adoption
 
 Phase 26 moves Cool from "released" to "adoptable". Phase 29 extends that loop
-from release assets into package-manager publication, external install
-verification, and first-user evidence. The priority is not a new language
-feature tranche; it is making installation, documentation, compatibility, and
-performance evidence repeatable.
+from release assets into package-manager readiness, external install
+verification, and first-user evidence. Phase 30 adds publication-state tracking
+so external package-manager submissions and verified install commands become
+repeatable release evidence. The priority is not a new language feature tranche;
+it is making installation, documentation, compatibility, and performance
+evidence repeatable.
 
 ## Maintainer Checklist
 
@@ -17,10 +19,11 @@ For each post-1.0 release:
 4. Regenerate package channels and verify the hosted channel archive.
 5. Run distribution readiness and keep its JSON report/checklist with release evidence.
 6. Run package submission and external install checks after channel generation.
-7. Run `apps/release_audit.cool --strict` before release.
-8. Record any supported-platform or compatibility-policy exception in release
+7. Run package publication checks after submission or publication status changes.
+8. Run `apps/release_audit.cool --strict` before release.
+9. Record any supported-platform or compatibility-policy exception in release
    notes.
-9. Capture a performance baseline when native backend or runtime changes may
+10. Capture a performance baseline when native backend or runtime changes may
    affect benchmark behavior.
 
 ## Package Channels
@@ -83,6 +86,15 @@ bash scripts/external_install_check.sh \
   --write-plan dist/validation/1.1.0/EXTERNAL_INSTALL_PLAN.md
 ```
 
+Phase 30 adds publication evidence checks:
+
+```bash
+bash scripts/package_publication_check.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-publication.json \
+  --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
+```
+
 ## Documentation
 
 The top-level README remains the broad feature tour. New long-form docs should
@@ -98,9 +110,9 @@ Prefer focused pages:
 
 The current structured entry points are `docs/LANGUAGE_REFERENCE.md`,
 `docs/NATIVE_COMPILER.md`, `docs/STDLIB_OVERVIEW.md`, `docs/DISTRIBUTION.md`,
-`docs/PACKAGE_MANAGER_SUBMISSIONS.md`, `docs/ECOSYSTEM_ADOPTION.md`,
-`docs/FIRST_30_MINUTES.md`, `docs/MAINTENANCE.md`, and
-`docs/DOGFOODING.md`.
+`docs/PACKAGE_MANAGER_SUBMISSIONS.md`, `docs/PACKAGE_PUBLICATION.md`,
+`docs/ECOSYSTEM_ADOPTION.md`, `docs/FIRST_30_MINUTES.md`,
+`docs/MAINTENANCE.md`, and `docs/DOGFOODING.md`.
 
 ## Performance Baselines
 

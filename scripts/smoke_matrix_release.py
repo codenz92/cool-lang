@@ -252,6 +252,17 @@ def main():
         for platform_name in PLATFORMS:
             external_cmd.extend(["--require-platform", platform_name])
         run(external_cmd)
+        publication_cmd = [
+            "bash",
+            "scripts/package_publication_check.sh",
+            "--version",
+            version,
+            "--report",
+            str(matrix_dist / "validation" / version / "package-publication.json"),
+            "--write-evidence",
+            str(matrix_dist / "validation" / version / "PACKAGE_PUBLICATION_EVIDENCE.md"),
+        ]
+        run(publication_cmd)
         validate_cmd = [
             "bash",
             "scripts/validate_release.sh",

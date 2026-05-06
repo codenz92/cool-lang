@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_URL = "https://github.com/codenz92/cool-lang/releases/download"
 VALID_STATUSES = {"ready", "submitted", "published", "blocked", "deferred"}
+VALID_STATUS_SCHEMA_VERSIONS = {1, 2}
 
 
 def fail(message):
@@ -145,7 +146,7 @@ def validate_status_file(checks, status_file, package_name, version):
     if not require_file(checks, status_file, "package submission status file exists"):
         return {}
     data = load_json(status_file)
-    add_check(checks, "submission status schema version is current", data.get("schema_version") == 1)
+    add_check(checks, "submission status schema version is supported", data.get("schema_version") in VALID_STATUS_SCHEMA_VERSIONS)
     package = data.get("package", {})
     add_check(checks, "submission status package name matches", package.get("name") == package_name)
     add_check(checks, "submission status current release matches", package.get("current_release") == version)
@@ -163,6 +164,14 @@ def validate_status_file(checks, status_file, package_name, version):
                 bool(record.get("submission_url") or record.get("published_url")),
                 str(record),
             )
+        if data.get("schema_version") == 2:
+            for field in ("submitted_at", "published_at", "verified_at", "public_install_command", "external_install_report"):
+                add_check(
+                    checks,
+                    f"{channel} publication evidence field is tracked: {field}",
+                    field in record,
+                    str(record.get(field, "")),
+                )
     return data
 
 

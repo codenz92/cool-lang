@@ -235,6 +235,10 @@ jobs:
             --report "dist/validation/$VERSION_VALUE/external-install.json" \
             --write-plan "dist/validation/$VERSION_VALUE/EXTERNAL_INSTALL_PLAN.md"
 
+          bash scripts/package_publication_check.sh "${VERSION_ARGS[@]}" \
+            --report "dist/validation/$VERSION_VALUE/package-publication.json" \
+            --write-evidence "dist/validation/$VERSION_VALUE/PACKAGE_PUBLICATION_EVIDENCE.md"
+
           VALIDATE_ARGS=(
             --version "$VERSION_VALUE"
             --platform multi

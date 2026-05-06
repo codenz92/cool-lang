@@ -1,8 +1,9 @@
 # Ecosystem Adoption
 
 Phase 29 turns a published Cool release into an externally installable product.
-The goal is to keep package-manager metadata, public install paths, and adoption
-evidence under the same validation discipline as release artifacts.
+Phase 30 adds a publication ledger and evidence gate so package-manager
+submission, publication, adoption, and install proof stay under the same
+validation discipline as release artifacts.
 
 ## Phase 29 Gate
 
@@ -33,6 +34,15 @@ Use `--run-hosted` on `external_install_check.sh` when public release assets or
 a local `file://` mirror are available. That mode delegates to
 `scripts/verify_hosted_release.sh` and can run an install smoke test.
 
+Phase 30 adds a package publication evidence gate:
+
+```bash
+bash scripts/package_publication_check.sh \
+  --version "$VERSION" \
+  --report "dist/validation/$VERSION/package-publication.json" \
+  --write-evidence "dist/validation/$VERSION/PACKAGE_PUBLICATION_EVIDENCE.md"
+```
+
 ## Package-Manager Loop
 
 The maintained loop for each public release is:
@@ -44,10 +54,11 @@ The maintained loop for each public release is:
    generated channel tree.
 4. Submit Homebrew, Winget, and Debian/apt metadata using immutable release
    URLs only.
-5. Update `docs/PACKAGE_SUBMISSION_STATUS.json` with submission or publication
-   links.
-6. Run external install checks once each package manager exposes the release.
-7. Record final package-manager evidence in the versioned release record.
+5. Update `docs/PACKAGE_SUBMISSION_STATUS.json` with submission URLs,
+   publication URLs, install commands, dates, and external install reports.
+6. Run `package_publication_check.sh` for the current channel state.
+7. Run external install checks once each package manager exposes the release.
+8. Record final package-manager evidence in the versioned release record.
 
 ## Adoption Evidence
 
@@ -68,6 +79,8 @@ lives in `examples/first_30_minutes/`.
 - `dist/validation/<version>/PACKAGE_SUBMISSION_CHECKLIST.md`
 - `dist/validation/<version>/external-install.json`
 - `dist/validation/<version>/EXTERNAL_INSTALL_PLAN.md`
+- `dist/validation/<version>/package-publication.json`
+- `dist/validation/<version>/PACKAGE_PUBLICATION_EVIDENCE.md`
 - `docs/PACKAGE_SUBMISSION_STATUS.json`
 
 Do not mark a channel as `published` until a user-visible install command has

@@ -1,0 +1,46 @@
+name: Package Publication
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-publication:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Validate package publication ledger
+        run: |
+          VERSION="$(python3 -c 'import re, pathlib; print(re.search(r"(?m)^version\s*=\s*\"([^\"]+)\"", pathlib.Path("Cargo.toml").read_text(encoding="utf-8")).group(1))')"
+
+          bash -n scripts/package_publication_check.sh
+          python3 -m py_compile scripts/package_publication_check.py
+          find scripts -name __pycache__ -type d -prune -exec rm -rf {} +
+
+          bash scripts/package_publication_check.sh \
+            --version "$VERSION" \
+            --report "dist/validation/$VERSION/package-publication.json" \
+            --write-evidence "dist/validation/$VERSION/PACKAGE_PUBLICATION_EVIDENCE.md"
+
+      - name: Upload publication reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cool-package-publication
+          path: dist/validation/**

@@ -8912,7 +8912,7 @@ fn test_pulse_and_control_apps_run_checks_from_manifest() {
 }
 
 #[test]
-fn test_release_audit_app_reports_phase29_surface() {
+fn test_release_audit_app_reports_phase30_surface() {
     let output = Command::new(cool_bin())
         .args(["apps/release_audit.cool", "--strict", "--json"])
         .output()
@@ -8950,6 +8950,61 @@ fn test_release_audit_app_reports_phase29_surface() {
         stdout.contains("scripts/external_install_check.py exists"),
         "stdout:\n{stdout}"
     );
+    assert!(
+        stdout.contains("docs/PACKAGE_PUBLICATION.md exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("scripts/package_publication_check.py exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains(".github/workflows/package-publication.yml exists"),
+        "stdout:\n{stdout}"
+    );
+}
+
+#[test]
+fn test_package_publication_check_reports_ready_channels() {
+    let temp_dir = unique_temp_dir("package_publication_check");
+    let _ = std::fs::remove_dir_all(&temp_dir);
+    std::fs::create_dir_all(&temp_dir).unwrap();
+    let report = temp_dir.join("package-publication.json");
+    let evidence = temp_dir.join("PACKAGE_PUBLICATION_EVIDENCE.md");
+
+    let output = Command::new("bash")
+        .args([
+            "scripts/package_publication_check.sh",
+            "--version",
+            "1.1.0",
+            "--report",
+            report.to_str().unwrap(),
+            "--write-evidence",
+            evidence.to_str().unwrap(),
+        ])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "stdout:\n{}\nstderr:\n{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains("package publication check: ok"), "stdout:\n{stdout}");
+    assert!(report.is_file(), "missing report {}", report.display());
+    assert!(evidence.is_file(), "missing evidence {}", evidence.display());
+    let report_text = std::fs::read_to_string(&report).unwrap();
+    assert!(report_text.contains("\"homebrew\""), "report:\n{report_text}");
+    assert!(report_text.contains("\"ready\""), "report:\n{report_text}");
+    let evidence_text = std::fs::read_to_string(&evidence).unwrap();
+    assert!(
+        evidence_text.contains("Package Publication Evidence For Cool 1.1.0"),
+        "evidence:\n{evidence_text}"
+    );
+
+    let _ = std::fs::remove_dir_all(&temp_dir);
 }
 
 #[test]

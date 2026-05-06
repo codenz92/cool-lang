@@ -19,9 +19,10 @@ Run the release gate from a clean tree:
 bash scripts/release_gate.sh
 ```
 
-The release gate includes the conformance suite, Cool-written release audit, and
-Phase 28 launch-identity check. Phase 29 package submission and external install
-checks run after package channels are generated. To capture separate
+The release gate includes the conformance suite, Cool-written release audit,
+Phase 28 launch-identity check, and Phase 30 publication ledger check. Phase 29
+package submission and external install checks run after package channels are
+generated. To capture separate
 compatibility and launch reports for release evidence, run:
 
 ```bash
@@ -62,6 +63,10 @@ bash scripts/external_install_check.sh \
   --version "$VERSION" \
   --report "dist/validation/$VERSION/external-install.json" \
   --write-plan "dist/validation/$VERSION/EXTERNAL_INSTALL_PLAN.md"
+bash scripts/package_publication_check.sh \
+  --version "$VERSION" \
+  --report "dist/validation/$VERSION/package-publication.json" \
+  --write-evidence "dist/validation/$VERSION/PACKAGE_PUBLICATION_EVIDENCE.md"
 bash scripts/validate_release.sh \
   --version "$VERSION" \
   --require-trust \

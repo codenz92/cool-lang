@@ -84,6 +84,7 @@ fi
 run bash scripts/conformance_suite.sh "${CONFORMANCE_ARGS[@]}"
 run "$COOL_BIN" apps/release_audit.cool --strict
 run bash scripts/release_launch_check.sh
+run bash scripts/package_publication_check.sh
 
 TMP_ROOT="${TMPDIR:-/tmp}"
 TMP_DIR="$(mktemp -d "$TMP_ROOT/cool-release-gate.XXXXXX")"

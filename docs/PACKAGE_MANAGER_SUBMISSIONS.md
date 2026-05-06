@@ -10,8 +10,15 @@ bash scripts/package_submission_check.sh --version 1.1.0
 bash scripts/external_install_check.sh --version 1.1.0
 ```
 
+Phase 30 adds the publication ledger gate:
+
+```bash
+bash scripts/package_publication_check.sh --version 1.1.0
+```
+
 Track channel state in `docs/PACKAGE_SUBMISSION_STATUS.json` and record final
-links in the versioned release record.
+links, install commands, dates, and evidence reports in the versioned release
+record.
 
 ## Pre-Submission Gate
 
@@ -69,8 +76,9 @@ Before opening a tap pull request:
 - Confirm each macOS/Linux URL points at the public GitHub Release tag.
 - Confirm every SHA-256 in the formula matches the hosted asset.
 - Keep the formula smoke test as `system "#{bin}/cool", "help"`.
-- Include the release record, hosted verification report, and distribution
-  readiness report in the pull request notes.
+- Include the release record, hosted verification report, distribution
+  readiness report, and package publication evidence report in the pull request
+  notes.
 - Before opening a pull request, run:
 
 ```bash
@@ -78,6 +86,10 @@ brew audit --strict --online --formula dist/channels/<version>/homebrew/cool.rb
 brew install --formula dist/channels/<version>/homebrew/cool.rb
 cool help
 ```
+
+After publication, update the status ledger to `published`, record the public
+install command and evidence report, then run
+`package_publication_check.sh --require-published homebrew`.
 
 ## Winget
 
@@ -103,6 +115,10 @@ winget install --manifest dist/channels/<version>/winget/Codenz.Cool/<version> -
 cool help
 ```
 
+After publication, verify `winget install Codenz.Cool` from a clean Windows
+environment, record the output, and run
+`package_publication_check.sh --require-published winget`.
+
 ## Debian And Apt
 
 Reference: https://www.debian.org/doc/debian-policy/
@@ -127,6 +143,9 @@ Before publishing or handing the output to downstream packaging:
 dpkg-deb --info dist/channels/<version>/apt/pool/main/c/cool/cool_<version>_amd64.deb
 gzip -dc dist/channels/<version>/apt/dists/stable/main/binary-amd64/Packages.gz | grep -A8 '^Package: cool$'
 ```
+
+After publication or mirror update, record the public apt source URL and install
+command, then run `package_publication_check.sh --require-published debian`.
 
 ## Final Record
 

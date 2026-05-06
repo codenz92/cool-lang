@@ -162,6 +162,8 @@ def main():
         "package_submission_check.py",
         "external_install_check.sh",
         "external_install_check.py",
+        "package_publication_check.sh",
+        "package_publication_check.py",
         "validate_release.sh",
         "validate_release.py",
         "verify_hosted_release.sh",

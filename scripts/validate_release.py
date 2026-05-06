@@ -272,6 +272,12 @@ def validate_archive(asset, package_name, version):
             f"{root}/scripts/external_install_check.sh",
             f"{root}/scripts/external_install_check.py",
         ]
+    if "Phase 30" in roadmap_text:
+        required += [
+            f"{root}/docs/PACKAGE_PUBLICATION.md",
+            f"{root}/scripts/package_publication_check.sh",
+            f"{root}/scripts/package_publication_check.py",
+        ]
     for rel in required:
         if rel not in files:
             fail(f"{asset.filename} missing payload file {rel}")

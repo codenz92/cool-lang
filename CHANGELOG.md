@@ -4,6 +4,14 @@ All notable changes to the Cool language project.
 
 ## [Unreleased]
 
+### Phase 30 — Public Package Publication Evidence
+
+- Added `scripts/package_publication_check.sh` / `.py` to validate package-manager publication status, official channel references, submission/publication URLs, public install commands, and external install evidence recorded in `docs/PACKAGE_SUBMISSION_STATUS.json`
+- Upgraded the package submission status ledger to schema version 2 with per-channel submission targets, publication dates, verified-at fields, public install commands, external install report references, and blocker tracking
+- Added `docs/PACKAGE_PUBLICATION.md` for the Phase 30 publication loop covering `ready`, `submitted`, `published`, `blocked`, and `deferred` channel states
+- Wired package publication checks into release validation, release matrix assembly, published-release validation, synthetic matrix smoke, release gate, package publication CI, and the Cool-written release audit app
+- Updated release candidates, promoted assets, matrix assembly, validation, package-channel docs, release runbook, support matrix, adoption docs, and the 1.1.0 release record to package and verify Phase 30 publication evidence
+
 ### Phase 29 — Ecosystem Publication And Adoption Loop
 
 - Added `scripts/package_submission_check.sh` / `.py` to validate generated Homebrew, Winget, and Debian/apt metadata before package-index submission, including immutable release URLs, SHA-256 values, current Winget manifest schema, Homebrew audit/test expectations, Debian control/index metadata, official submission docs, and structured submission status

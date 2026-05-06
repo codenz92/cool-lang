@@ -23,6 +23,7 @@ release verification.
 | Debian/apt metadata | Linux x86_64 `.tar.gz` asset | `linux-x86_64` tarball exists | `validate_release.sh --require-channels` |
 | Channel archive | Full `dist/channels/<version>/` tree | Every release channel generation | `verify_hosted_release.sh --check-channel-archive` |
 | Package submission evidence | Generated channel tree | After hosted verification | `package_submission_check.sh` and `external_install_check.sh` |
+| Package publication evidence | Status ledger and external install reports | After submission or publication changes | `package_publication_check.sh` |
 
 ## Verification Coverage
 
@@ -36,6 +37,8 @@ checks the same public contract from the user's point of view:
   package-manager submission gates.
 - Phase 29 package submission and external install checks for package-manager
   readiness and post-submit evidence.
+- Phase 30 package publication checks for submitted/published status, install
+  commands, and external evidence links.
 - `release.json`, `latest.json`, and `SHA256SUMS` hashes and sizes.
 - Platform tarball and zip payload roots, manifests, payload checksums, docs, and release scripts.
 - SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS` when trust is required.
@@ -54,5 +57,7 @@ checks the same public contract from the user's point of view:
   entries, or trust metadata.
 - Do not submit package-index updates until distribution readiness and hosted
   verification pass.
+- Do not mark package-manager channels as published until
+  `package_publication_check.sh` can verify the publication evidence.
 - Prefer a patch release over replacing assets after a public release has been
   announced or downloaded.
