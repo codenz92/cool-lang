@@ -224,6 +224,16 @@ def validate_archive(asset, package_name, version):
         f"{root}/docs/RELEASE_VALIDATION.md",
         f"{root}/docs/RELEASE_RUNBOOK.md",
         f"{root}/docs/SUPPORT_MATRIX.md",
+        f"{root}/docs/README.md",
+        f"{root}/docs/COMPATIBILITY.md",
+        f"{root}/docs/CONFORMANCE.md",
+        f"{root}/docs/ADOPTION.md",
+        f"{root}/conformance/manifest.json",
+        f"{root}/conformance/runtime/core_language.cool",
+        f"{root}/conformance/runtime/typed_language.cool",
+        f"{root}/conformance/runtime/stdlib_data.cool",
+        f"{root}/conformance/check/strict_typed_api.cool",
+        f"{root}/conformance/check/non_exhaustive_match.cool",
         f"{root}/scripts/release_candidate.sh",
         f"{root}/scripts/promote_release.sh",
         f"{root}/scripts/trust_release.py",
@@ -233,6 +243,10 @@ def validate_archive(asset, package_name, version):
         f"{root}/scripts/validate_release.py",
         f"{root}/scripts/verify_hosted_release.py",
         f"{root}/scripts/smoke_matrix_release.py",
+        f"{root}/scripts/conformance_suite.sh",
+        f"{root}/scripts/conformance_suite.py",
+        f"{root}/scripts/performance_baseline.sh",
+        f"{root}/scripts/performance_baseline.py",
     ]
     for rel in required:
         if rel not in files:

@@ -29,6 +29,7 @@ Release validation checks local promoted artifacts before upload. Hosted release
 verification downloads the final assets from GitHub Releases or a mirror and
 checks the same public contract from the user's point of view:
 
+- Phase 26 conformance cases for stable runtime parity and static diagnostics.
 - `release.json`, `latest.json`, and `SHA256SUMS` hashes and sizes.
 - Platform tarball and zip payload roots, manifests, payload checksums, docs, and release scripts.
 - SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS` when trust is required.
@@ -39,6 +40,8 @@ checks the same public contract from the user's point of view:
 
 - A supported platform must keep passing the release matrix before it can be
   listed as supported.
+- A supported hosted runtime mode must keep passing the conformance suite for
+  the stable surface it implements.
 - If a platform cannot be built or verified, remove it from the required-platform
   list before publishing and document the gap in release notes.
 - Do not publish a release with mismatched archive names, hashes, package-channel

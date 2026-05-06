@@ -73,6 +73,7 @@ fi
 
 run "$COOL_BIN" check examples/hello.cool
 run "$COOL_BIN" check examples/coolboard/src/main.cool
+run bash scripts/conformance_suite.sh --cool-bin "$COOL_BIN"
 
 TMP_ROOT="${TMPDIR:-/tmp}"
 TMP_DIR="$(mktemp -d "$TMP_ROOT/cool-release-gate.XXXXXX")"

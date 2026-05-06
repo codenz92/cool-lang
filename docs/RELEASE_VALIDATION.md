@@ -20,6 +20,7 @@ The validator checks:
 
 - `release.json`, `latest.json`, and `SHA256SUMS`
 - promoted tarball and zip hashes, sizes, payload roots, manifests, and payload checksums
+- packaged docs, conformance cases, and maintainer scripts needed to audit a release artifact offline
 - platform sidecars: `*.manifest.json`, `*.checksums.txt`, and `*.RC_NOTES.md`
 - trust files when `--require-trust` is present: SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS`
 - channel files when `--require-channels` is present: `channels.json`, `CHANNEL_SHA256SUMS`, Homebrew, Winget, Debian/apt metadata, and the channel tarball
@@ -72,6 +73,13 @@ bash scripts/validate_release.sh \
 The report records the release platform, platforms discovered, archive count,
 checksum counts, channel counts, and installer smoke target.
 
+The Phase 26 conformance suite can emit a separate compatibility report:
+
+```bash
+bash scripts/conformance_suite.sh \
+  --report dist/validation/1.0.0/conformance-validation.json
+```
+
 ## Hosted Release Verification
 
 After assets are uploaded to a public GitHub Release or mirror, verify the
@@ -123,9 +131,10 @@ tag is cut.
 ## Release Checklist
 
 1. `bash scripts/release_gate.sh`
-2. `bash scripts/release_candidate.sh --require-clean`
-3. `bash scripts/promote_release.sh --version <version>`
-4. `bash scripts/package_channels.sh generate --version <version>`
-5. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
-6. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
-7. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.
+2. `bash scripts/conformance_suite.sh --report dist/validation/<version>/conformance-validation.json`
+3. `bash scripts/release_candidate.sh --require-clean`
+4. `bash scripts/promote_release.sh --version <version>`
+5. `bash scripts/package_channels.sh generate --version <version>`
+6. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
+7. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
+8. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.

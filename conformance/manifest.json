@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "description": "Post-1.0 compatibility conformance suite for the stable Cool language surface.",
+  "runtime_modes": ["interpreter", "vm", "native"],
+  "runtime_cases": [
+    {
+      "name": "core-language",
+      "path": "conformance/runtime/core_language.cool",
+      "description": "Closures, lambdas, inheritance, list comprehensions, and exception cleanup.",
+      "expected_stdout": "17\n105\nAda:woof\n[1, 4, 9]\nhandled: boom\ncleanup\n"
+    },
+    {
+      "name": "typed-language",
+      "path": "conformance/runtime/typed_language.cool",
+      "description": "Traits, generic structs/functions, enums, and match dispatch.",
+      "expected_stdout": "7\nAda\n41\nnone\n"
+    },
+    {
+      "name": "stdlib-data",
+      "path": "conformance/runtime/stdlib_data.cool",
+      "description": "Stable data-oriented standard library helpers across runtimes.",
+      "expected_stdout": "Q29vbA==\n4f4b\n2\nREADME.md\nsome\n9\n"
+    }
+  ],
+  "check_cases": [
+    {
+      "name": "strict-typed-api",
+      "path": "conformance/check/strict_typed_api.cool",
+      "description": "Strict static checking accepts a fully annotated public API.",
+      "strict": true,
+      "expected_status": "pass",
+      "stdout_contains": ["check ok"]
+    },
+    {
+      "name": "non-exhaustive-match",
+      "path": "conformance/check/non_exhaustive_match.cool",
+      "description": "Static checking rejects non-exhaustive enum matches.",
+      "strict": false,
+      "expected_status": "fail",
+      "stderr_contains": ["non_exhaustive_match"]
+    }
+  ]
+}

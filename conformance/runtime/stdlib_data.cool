@@ -1,0 +1,16 @@
+import base64
+import bytes
+import json
+import option
+import path
+import result
+
+print(base64.encode_text("Cool"))
+print(bytes.hex(bytes.from_string("OK")))
+
+doc = json.loads("{\"tool\":{\"name\":\"cool\",\"numbers\":[1,2,3]}}")
+print(json.pointer(doc, "/tool/numbers/1"))
+
+print(path.basename(path.join("docs", "README.md")))
+print(option.unwrap(option.some("some")))
+print(result.unwrap(result.ok(9)))

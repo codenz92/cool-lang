@@ -52,17 +52,24 @@ jobs:
             scripts/assemble_matrix_release.sh \
             scripts/validate_release.sh \
             scripts/verify_hosted_release.sh \
-            scripts/smoke_matrix_release.sh
+            scripts/smoke_matrix_release.sh \
+            scripts/conformance_suite.sh \
+            scripts/performance_baseline.sh
           python3 -m py_compile \
             scripts/trust_release.py \
             scripts/package_channels.py \
             scripts/assemble_matrix_release.py \
             scripts/validate_release.py \
             scripts/verify_hosted_release.py \
-            scripts/smoke_matrix_release.py
+            scripts/smoke_matrix_release.py \
+            scripts/conformance_suite.py \
+            scripts/performance_baseline.py
           find scripts -name __pycache__ -type d -prune -exec rm -rf {} +
 
           bash scripts/release_candidate.sh --skip-gate --platform macos-arm64
+          COOL_BIN="$PWD/target/release/cool" bash scripts/conformance_suite.sh \
+            --skip-native \
+            --report "dist/validation/$VERSION/conformance-validation.json"
           bash scripts/promote_release.sh --version "$VERSION" --platform macos-arm64 --allow-skipped-gate
           bash scripts/package_channels.sh generate --version "$VERSION"
           bash scripts/validate_release.sh \

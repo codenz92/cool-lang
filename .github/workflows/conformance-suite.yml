@@ -1,0 +1,43 @@
+name: Conformance Suite
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: macos-14
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install LLVM 17
+        run: |
+          brew install llvm@17
+          echo "LLVM_SYS_170_PREFIX=$(brew --prefix llvm@17)" >> "$GITHUB_ENV"
+          echo "$(brew --prefix llvm@17)/bin" >> "$GITHUB_PATH"
+
+      - name: Build Cool
+        run: cargo build --bin cool
+
+      - name: Run conformance suite
+        run: bash scripts/conformance_suite.sh --report dist/validation/conformance-suite.json
+
+      - name: Upload conformance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cool-conformance-suite
+          path: dist/validation/conformance-suite.json

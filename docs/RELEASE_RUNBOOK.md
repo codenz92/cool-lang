@@ -19,6 +19,14 @@ Run the release gate from a clean tree:
 bash scripts/release_gate.sh
 ```
 
+The release gate includes the Phase 26 conformance suite. To capture a separate
+compatibility report for release evidence, run:
+
+```bash
+bash scripts/conformance_suite.sh \
+  --report dist/validation/1.0.0/conformance-validation.json
+```
+
 Build and promote a local host candidate when you need a fast final sanity
 check before using the full matrix:
 
@@ -120,6 +128,7 @@ Before closing the release checklist, record:
 
 - GitHub Release URL.
 - `release-validation.json` workflow artifact.
+- `conformance-validation.json` or `conformance-suite.json` workflow artifact.
 - `hosted-release-validation.json` workflow artifact.
 - Package-channel archive name and hash.
 - Any manual deviations from this runbook.

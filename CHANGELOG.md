@@ -2,7 +2,17 @@
 
 All notable changes to the Cool language project.
 
-## [Unreleased] - Phase 25 Complete
+## [Unreleased] - Phase 26 Complete
+
+### Phase 26 — Post-1.0 Adoption And Compatibility
+
+- Added `docs/COMPATIBILITY.md`, `docs/CONFORMANCE.md`, `docs/ADOPTION.md`, and `docs/README.md` to define the stable 1.x compatibility contract, conformance workflow, adoption checklist, package-channel publication expectations, and docs entry point
+- Added `conformance/manifest.json` plus runtime/static conformance cases for core language behavior, typed language features, stable data stdlib helpers, strict typed APIs, and non-exhaustive match diagnostics
+- Added `scripts/conformance_suite.sh` / `.py` to run conformance cases across interpreter, VM, and native modes, compare exact output, validate static diagnostics, and write JSON reports
+- Added the `Conformance Suite` GitHub Actions workflow and wired the conformance runner into the release gate and release-validation workflow
+- Release candidates now package conformance cases, compatibility/adoption docs, conformance tooling, and performance-baseline tooling; release validation checks those assets are present in archives
+- Added `scripts/performance_baseline.sh` / `.py` to record Cool-vs-Rust benchmark output and JSON metadata under `dist/performance/<version>/`
+- Updated release runbook, support matrix, release validation docs, package-channel docs, benchmark docs, PR template, release checklist, README, and roadmap for the Phase 26 compatibility/adoption workflow
 
 ### Phase 25 — Public 1.0.0 Release Execution
 

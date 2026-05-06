@@ -27,6 +27,7 @@
 5. Systems interop as a signature advantage (`bindgen`, ABI, targets, link flow)
 6. Release gate and CI-backed quality checks for routine shipping
 7. Public `v1.0.0` release shipped with a four-platform matrix, hosted verification, installer audit, trust metadata, and package channels
+8. Post-1.0 compatibility, conformance, documentation, adoption, and performance evidence loops
 
 ## Legend
 
@@ -800,6 +801,38 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 
 ---
 
+## Phase 26 — Post-1.0 Adoption And Compatibility ✅ Complete
+
+> Goal: make Cool adoptable after 1.0 by turning compatibility, conformance, documentation, package-channel readiness, and performance evidence into repeatable maintainer workflows.
+
+### Compatibility Contract
+
+- [x] `docs/COMPATIBILITY.md` defines the stable 1.x surface, semantic-versioning rules, runtime parity expectations, deprecation policy, and release requirements
+- [x] `docs/README.md` splits the documentation entry point out of the large top-level README and links install, compatibility, conformance, adoption, support, validation, trust, and release-operation docs
+- [x] `docs/ADOPTION.md` captures the post-1.0 maintainer checklist for package-channel publication, documentation growth, compatibility exceptions, and benchmark evidence
+
+### Conformance Suite
+
+- [x] `conformance/manifest.json` records stable runtime and static-check cases with exact expected output or diagnostics
+- [x] Runtime conformance cases cover core hosted language behavior, typed language features, and stable data-oriented stdlib helpers
+- [x] Static conformance cases cover strict typed API acceptance and non-exhaustive enum-match rejection
+- [x] `scripts/conformance_suite.sh` / `.py` run selected cases across interpreter, VM, and native modes, copy native cases to temp directories, compare exact outputs, and emit JSON reports
+- [x] The release gate and `Conformance Suite` workflow run the conformance suite as a compatibility gate
+
+### Release And Adoption Evidence
+
+- [x] Release candidates now package conformance cases, compatibility/adoption docs, conformance tooling, and performance-baseline tooling
+- [x] Release validation verifies packaged conformance assets and post-1.0 documentation are present in release archives
+- [x] Release validation CI syntax-checks and byte-compiles the Phase 26 scripts, then records a non-native conformance report from the release binary
+- [x] Release runbook, release checklist, support matrix, package-channel docs, and PR template now call out compatibility/conformance requirements
+
+### Performance Baselines
+
+- [x] `scripts/performance_baseline.sh` / `.py` wrap the Cool-vs-Rust benchmark harness, record raw output, parse summary rows, and write JSON metadata under `dist/performance/<version>/`
+- [x] Benchmark documentation explains when to record a baseline and how to run a quick local smoke benchmark
+
+---
+
 ## Summary
 
 | Phase | Status |
@@ -829,3 +862,4 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 | 23 — Public Release Validation And Ecosystem Readiness | ✅ Complete |
 | 24 — Real Public Release And Post-Release Operations | ✅ Complete |
 | 25 — Public 1.0.0 Release Execution | ✅ Complete |
+| 26 — Post-1.0 Adoption And Compatibility | ✅ Complete |

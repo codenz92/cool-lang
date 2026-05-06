@@ -1,0 +1,35 @@
+def make_adder(n):
+    def adder(x):
+        return x + n
+    return adder
+
+add7 = make_adder(7)
+print(add7(10))
+
+n = 7
+add = lambda x: x + n
+n = 100
+print(add(5))
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return self.name + ":?"
+
+class Dog(Animal):
+    def speak(self):
+        return self.name + ":woof"
+
+print(Dog("Ada").speak())
+
+squares = [x * x for x in [1, 2, 3]]
+print(squares)
+
+try:
+    raise "boom"
+except as e:
+    print("handled: " + str(e))
+finally:
+    print("cleanup")

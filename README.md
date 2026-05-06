@@ -870,7 +870,14 @@ cargo build --release
 
 # Compare native Cool vs Rust on the bundled benchmark workloads
 cargo run --release --bin bench_compare -- --runs 5 --warmups 1
+
+# Run the post-1.0 compatibility conformance suite
+bash scripts/conformance_suite.sh
 ```
+
+Longer documentation now lives under [`docs/`](docs/README.md), including
+compatibility policy, conformance, adoption, install, support, release
+validation, and release trust operations.
 
 ### Release Gate
 
@@ -880,7 +887,22 @@ Run the repo-level release gate before tagging or pushing a release-critical cha
 bash scripts/release_gate.sh
 ```
 
-The gate runs `cargo fmt --check`, builds the `cool` binary, runs the full Rust test suite, statically checks representative Cool examples, verifies interpreter / VM / LLVM parity on a closure smoke program, and confirms freestanding object output still works.
+The gate runs `cargo fmt --check`, builds the `cool` binary, runs the full Rust test suite, runs the Phase 26 conformance suite across interpreter / VM / native modes, statically checks representative Cool examples, verifies interpreter / VM / LLVM parity on a closure smoke program, and confirms freestanding object output still works.
+
+### Conformance And Compatibility
+
+Phase 26 adds a compact compatibility suite for the stable 1.x language surface:
+
+```bash
+bash scripts/conformance_suite.sh
+bash scripts/conformance_suite.sh --skip-native
+bash scripts/conformance_suite.sh --report dist/validation/1.0.0/conformance-validation.json
+```
+
+The suite is driven by `conformance/manifest.json`, covers runtime parity and
+static diagnostics, and emits JSON reports for CI or release evidence. See
+[`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) and
+[`docs/CONFORMANCE.md`](docs/CONFORMANCE.md).
 
 ### Release Candidate Build
 
@@ -1514,6 +1536,8 @@ examples/
 | 22 — Multi-platform release matrix and package channels | ✅ Complete |
 | 23 — Public release validation and ecosystem readiness | ✅ Complete |
 | 24 — Real public release and post-release operations | ✅ Complete |
+| 25 — Public 1.0.0 release execution | ✅ Complete |
+| 26 — Post-1.0 adoption and compatibility | ✅ Complete |
 
 See [`ROADMAP.md`](ROADMAP.md) for the full breakdown.
 

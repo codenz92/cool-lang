@@ -1,0 +1,8 @@
+public const VERSION: str = "1.0.0"
+
+public def add(a: int, b: int) -> int:
+    total: int = a + b
+    return total
+
+public def label(name: str, count: int) -> str:
+    return name + ":" + str(count)

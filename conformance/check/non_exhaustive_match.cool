@@ -1,0 +1,8 @@
+enum Result[T, E]:
+    Ok(value: T)
+    Err(error: E)
+
+def unwrap(value: Result[int, str]) -> int:
+    match value:
+        Result.Ok(inner):
+            return inner

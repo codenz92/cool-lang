@@ -1,0 +1,33 @@
+trait Named:
+    def name(self) -> str
+
+class User implements Named:
+    def __init__(self, name: str):
+        self.value = name
+
+    def name(self) -> str:
+        return self.value
+
+enum Option[T]:
+    Some(value: T)
+    None
+
+struct Box[T]:
+    value: T
+
+def identity[T](value: T) -> T:
+    return value
+
+def show(value: Option[int]) -> int:
+    match value:
+        Option.Some(inner):
+            print(inner)
+            return inner
+        Option.None:
+            print("none")
+            return 0
+
+print(identity(Box(7)).value)
+print(User("Ada").name())
+show(Option.Some(41))
+show(Option.None)

@@ -72,5 +72,10 @@ Homebrew uses platform tarballs. Winget uses the Windows zip archive and the
 portable `bin/cool.exe` nested installer path. Debian/apt metadata is generated
 from the Linux x86_64 tarball into a simple `.deb` plus `Packages` indexes.
 
+For public package-index submissions, use hosted GitHub Release URLs and verify
+the uploaded channel archive with `verify_hosted_release.sh --check-channel-archive`
+before submitting. The adoption checklist in `docs/ADOPTION.md` covers the
+post-1.0 package-channel workflow.
+
 See `docs/RELEASE_VALIDATION.md` for the full pre-publish validation checklist
 and synthetic matrix smoke test.

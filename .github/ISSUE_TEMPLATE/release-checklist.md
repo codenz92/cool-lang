@@ -16,6 +16,7 @@ assignees: ""
 ## Pre-Release Gate
 
 - [ ] `bash scripts/release_gate.sh`
+- [ ] `bash scripts/conformance_suite.sh --report dist/validation/<version>/conformance-validation.json`
 - [ ] `bash scripts/release_candidate.sh --require-clean --version <version>`
 - [ ] `bash scripts/promote_release.sh --version <version>`
 - [ ] `bash scripts/package_channels.sh generate --version <version>`

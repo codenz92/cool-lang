@@ -19,6 +19,14 @@ It targets the LLVM/native backend only. The interpreter and bytecode VM are int
 cargo run --release --bin bench_compare -- --runs 5 --warmups 1
 ```
 
+For release evidence or backend performance work, use the Phase 26 baseline
+wrapper. It records the raw benchmark output plus JSON metadata under
+`dist/performance/<version>/`:
+
+```bash
+bash scripts/performance_baseline.sh --runs 5 --warmups 1
+```
+
 Useful options:
 
 - `--filter <name>` to run a single workload
