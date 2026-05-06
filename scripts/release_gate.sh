@@ -77,7 +77,11 @@ fi
 
 run "$COOL_BIN" check examples/hello.cool
 run "$COOL_BIN" check examples/coolboard/src/main.cool
-run bash scripts/conformance_suite.sh --cool-bin "$COOL_BIN"
+CONFORMANCE_ARGS=(--cool-bin "$COOL_BIN")
+if [[ "$HOSTED_NATIVE_BINARY" -ne 1 ]]; then
+    CONFORMANCE_ARGS+=(--skip-native)
+fi
+run bash scripts/conformance_suite.sh "${CONFORMANCE_ARGS[@]}"
 run "$COOL_BIN" apps/release_audit.cool --strict
 run bash scripts/release_launch_check.sh
 
