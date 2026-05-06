@@ -65,7 +65,11 @@ else
     run cargo test -q
 fi
 
-COOL_BIN="${COOL_BIN:-$ROOT/target/debug/cool}"
+COOL_EXE_NAME="cool"
+if [[ "$HOST_OS" == MINGW* || "$HOST_OS" == MSYS* || "$HOST_OS" == CYGWIN* ]]; then
+    COOL_EXE_NAME="cool.exe"
+fi
+COOL_BIN="${COOL_BIN:-$ROOT/target/debug/$COOL_EXE_NAME}"
 if [[ ! -x "$COOL_BIN" ]]; then
     printf 'release gate: cool binary not found or not executable: %s\n' "$COOL_BIN" >&2
     exit 1
