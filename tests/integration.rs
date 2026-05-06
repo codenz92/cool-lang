@@ -4851,7 +4851,7 @@ fn test_repl_banner_shows_current_version() {
 
     assert!(output.status.success());
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("Cool 1.0.0"));
+    assert!(stdout.contains(&format!("Cool {}", env!("CARGO_PKG_VERSION"))));
     assert!(stdout.contains("type 'exit' to quit"));
 }
 
@@ -8912,7 +8912,7 @@ fn test_pulse_and_control_apps_run_checks_from_manifest() {
 }
 
 #[test]
-fn test_release_audit_app_reports_phase27_surface() {
+fn test_release_audit_app_reports_phase28_surface() {
     let output = Command::new(cool_bin())
         .args(["apps/release_audit.cool", "--strict", "--json"])
         .output()
@@ -8928,6 +8928,14 @@ fn test_release_audit_app_reports_phase27_surface() {
     assert!(stdout.contains("docs/DISTRIBUTION.md exists"), "stdout:\n{stdout}");
     assert!(
         stdout.contains("scripts/distribution_readiness.py exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("scripts/release_launch_check.py exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("docs/PACKAGE_MANAGER_SUBMISSIONS.md exists"),
         "stdout:\n{stdout}"
     );
 }

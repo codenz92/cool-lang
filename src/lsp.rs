@@ -201,7 +201,7 @@ impl LspServer {
                     "documentSymbolProvider": true,
                     "workspaceSymbolProvider": true
                 },
-                "serverInfo": {"name": "cool-lsp", "version": "1.0.0"}
+                "serverInfo": {"name": "cool-lsp", "version": env!("CARGO_PKG_VERSION")}
             }
         })
     }

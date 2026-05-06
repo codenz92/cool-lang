@@ -12,7 +12,7 @@ REQUIRE_CLEAN=0
 
 usage() {
     cat <<'USAGE'
-release candidate v1.0 — build and package the Cool compiler distribution
+release candidate v1.1 — build and package the Cool compiler distribution
 
 Usage:
   bash scripts/release_candidate.sh [--skip-gate] [--require-clean] [--version X.Y.Z] [--platform PLATFORM] [--dist-dir DIR]
@@ -296,7 +296,9 @@ Release gate: $GATE_STATUS
 - \`docs/RELEASE_VALIDATION.md\`
 - \`docs/RELEASE_RUNBOOK.md\`
 - \`docs/SUPPORT_MATRIX.md\`
+- \`docs/PACKAGE_MANAGER_SUBMISSIONS.md\`
 - \`scripts/release_gate.sh\`
+- \`scripts/release_launch_check.sh\`
 - \`scripts/release_candidate.sh\`
 - \`scripts/promote_release.sh\`
 - \`scripts/trust_release.sh\`
@@ -481,7 +483,12 @@ cp docs/RELEASE_RUNBOOK.md docs/SUPPORT_MATRIX.md "$RC_DIR/docs/"
 cp docs/README.md docs/COMPATIBILITY.md docs/CONFORMANCE.md docs/ADOPTION.md "$RC_DIR/docs/"
 cp docs/DISTRIBUTION.md docs/DOGFOODING.md docs/LANGUAGE_REFERENCE.md "$RC_DIR/docs/"
 cp docs/NATIVE_COMPILER.md docs/STDLIB_OVERVIEW.md "$RC_DIR/docs/"
+cp docs/PACKAGE_MANAGER_SUBMISSIONS.md "$RC_DIR/docs/"
+for release_doc in docs/RELEASE_*.md; do
+    [[ -f "$release_doc" ]] && cp "$release_doc" "$RC_DIR/docs/"
+done
 cp scripts/release_gate.sh scripts/release_candidate.sh scripts/promote_release.sh "$RC_DIR/scripts/"
+cp scripts/release_launch_check.sh scripts/release_launch_check.py "$RC_DIR/scripts/"
 cp scripts/trust_release.sh scripts/trust_release.py scripts/publish_release.sh "$RC_DIR/scripts/"
 cp scripts/package_channels.sh scripts/package_channels.py "$RC_DIR/scripts/"
 cp scripts/assemble_matrix_release.sh scripts/assemble_matrix_release.py "$RC_DIR/scripts/"

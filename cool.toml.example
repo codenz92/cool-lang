@@ -34,7 +34,7 @@ main = "src/main.cool"
 # Optional: pin the external toolchain used for native builds.
 #
 # [toolchain]
-# cool = "1.0.0"
+# cool = "1.1.0"
 # cc = "clang"
 # ar = "llvm-ar"
 # lld = "ld.lld"

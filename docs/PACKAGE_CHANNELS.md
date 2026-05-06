@@ -7,7 +7,7 @@ channel outputs under `dist/channels/<version>/`.
 ## Generate Channels
 
 ```bash
-bash scripts/package_channels.sh generate --version 1.0.0
+bash scripts/package_channels.sh generate --version 1.1.0
 ```
 
 Generated outputs include:
@@ -26,7 +26,7 @@ Use required-platform checks in CI to prevent publishing partial channels:
 
 ```bash
 bash scripts/package_channels.sh generate \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-platform linux-x86_64 \
   --require-platform macos-x86_64 \
   --require-platform macos-arm64 \
@@ -41,22 +41,22 @@ them into a single release directory:
 ```bash
 bash scripts/assemble_matrix_release.sh \
   --source-dir dist/matrix-input \
-  --version 1.0.0
+  --version 1.1.0
 ```
 
 After assembly, run trust and channel generation:
 
 ```bash
-bash scripts/trust_release.sh generate --version 1.0.0 --platform multi
-bash scripts/trust_release.sh verify --version 1.0.0 --platform multi
-bash scripts/package_channels.sh generate --version 1.0.0
+bash scripts/trust_release.sh generate --version 1.1.0 --platform multi
+bash scripts/trust_release.sh verify --version 1.1.0 --platform multi
+bash scripts/package_channels.sh generate --version 1.1.0
 ```
 
 Then validate the release and package channels before publishing:
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --require-channels \
@@ -69,8 +69,9 @@ bash scripts/validate_release.sh \
 Run the distribution readiness audit before package-index submission:
 
 ```bash
+bash scripts/release_launch_check.sh --version 1.1.0
 bash scripts/distribution_readiness.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-platform linux-x86_64 \
   --require-platform macos-x86_64 \
   --require-platform macos-arm64 \
@@ -84,9 +85,11 @@ portable `bin/cool.exe` nested installer path. Debian/apt metadata is generated
 from the Linux x86_64 tarball into a simple `.deb` plus `Packages` indexes.
 
 For public package-index submissions, use hosted GitHub Release URLs, run
-`scripts/distribution_readiness.sh`, and verify the uploaded channel archive
-with `verify_hosted_release.sh --check-channel-archive` before submitting. The
-adoption checklist in `docs/ADOPTION.md` covers the post-1.0 package-channel
+`scripts/release_launch_check.sh` and `scripts/distribution_readiness.sh`, and
+verify the uploaded channel archive with
+`verify_hosted_release.sh --check-channel-archive` before submitting. The
+adoption checklist in `docs/ADOPTION.md` and package-manager checklist in
+`docs/PACKAGE_MANAGER_SUBMISSIONS.md` cover the post-1.0 package-channel
 workflow.
 
 See `docs/RELEASE_VALIDATION.md` for the full pre-publish validation checklist

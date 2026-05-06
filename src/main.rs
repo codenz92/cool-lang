@@ -424,7 +424,7 @@ fn collect_cool_files(path: &Path, out: &mut Vec<PathBuf>) -> Result<(), String>
 fn repl() {
     use std::io::{self, BufRead, Write};
     let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-    println!("Cool 1.0.0 — type 'exit' to quit");
+    println!("Cool {} — type 'exit' to quit", env!("CARGO_PKG_VERSION"));
     let stdin = io::stdin();
     loop {
         print!(">>> ");
@@ -2585,7 +2585,7 @@ fn cmd_publish(args: &[&String]) -> Result<(), String> {
 fn print_help() {
     println!(
         "\
-Cool 1.0.0 — a native-first high-level systems language
+Cool {} — a native-first high-level systems language
 
 USAGE:
     cool build                    Build the project described by cool.toml
@@ -2690,7 +2690,8 @@ NOTES:
     write_i8/u8/i16/u16/i32/u32/i64 plus read/write_byte, read/write_f64, read/write_str,
     and volatile *_volatile MMIO variants for byte/i8/u8/i16/u16/i32/u32/i64/f64).
     FFI works in the interpreter and native builds, but not in the bytecode VM.
-"
+",
+        env!("CARGO_PKG_VERSION")
     );
 }
 

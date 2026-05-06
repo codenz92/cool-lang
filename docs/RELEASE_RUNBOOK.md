@@ -6,7 +6,7 @@ assumes the version in `Cargo.toml` is final and the release branch is clean.
 ## Roles And Inputs
 
 - Release owner: one person owns the checklist and final publish decision.
-- Version: semantic version without the leading `v`, for example `1.0.0`.
+- Version: semantic version without the leading `v`, for example `1.1.0`.
 - Tag: `v<version>`.
 - Signing key: optional OpenSSL private key exposed to CI as `COOL_RELEASE_SIGNING_KEY_B64`.
 - Required public platforms: `linux-x86_64`, `macos-x86_64`, `macos-arm64`, `windows-x86_64`.
@@ -19,12 +19,20 @@ Run the release gate from a clean tree:
 bash scripts/release_gate.sh
 ```
 
-The release gate includes the Phase 26 conformance suite. To capture a separate
-compatibility report for release evidence, run:
+The release gate includes the conformance suite, Cool-written release audit, and
+Phase 28 launch-identity check. To capture separate compatibility and launch
+reports for release evidence, run:
 
 ```bash
+VERSION=1.1.0
 bash scripts/conformance_suite.sh \
-  --report dist/validation/1.0.0/conformance-validation.json
+  --report "dist/validation/$VERSION/conformance-validation.json"
+bash scripts/release_launch_check.sh \
+  --version "$VERSION" \
+  --require-unreleased-tag \
+  --require-newer-than-latest-tag \
+  --report "dist/validation/$VERSION/release-launch.json" \
+  --write-checklist "dist/validation/$VERSION/RELEASE_LAUNCH_CHECKLIST.md"
 ```
 
 Run the Cool-written release audit app:
@@ -37,16 +45,16 @@ Build and promote a local host candidate when you need a fast final sanity
 check before using the full matrix:
 
 ```bash
-bash scripts/release_candidate.sh --require-clean --version 1.0.0
-bash scripts/promote_release.sh --version 1.0.0
-bash scripts/package_channels.sh generate --version 1.0.0
+bash scripts/release_candidate.sh --require-clean --version "$VERSION"
+bash scripts/promote_release.sh --version "$VERSION"
+bash scripts/package_channels.sh generate --version "$VERSION"
 bash scripts/distribution_readiness.sh \
-  --version 1.0.0 \
+  --version "$VERSION" \
   --require-platform macos-arm64 \
-  --report dist/validation/1.0.0/distribution-readiness.json \
-  --write-checklist dist/validation/1.0.0/DISTRIBUTION_CHECKLIST.md
+  --report "dist/validation/$VERSION/distribution-readiness.json" \
+  --write-checklist "dist/validation/$VERSION/DISTRIBUTION_CHECKLIST.md"
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version "$VERSION" \
   --require-trust \
   --require-channels \
   --install-smoke
@@ -55,7 +63,7 @@ bash scripts/validate_release.sh \
 For a synthetic four-platform packaging check from the host artifact:
 
 ```bash
-bash scripts/smoke_matrix_release.sh --version 1.0.0
+bash scripts/smoke_matrix_release.sh --version "$VERSION"
 ```
 
 ## Matrix Release
@@ -74,8 +82,8 @@ Manual dispatch inputs:
 Tag push flow:
 
 ```bash
-git tag -a v1.0.0 -m "Release v1.0.0"
-git push origin v1.0.0
+git tag -a "v$VERSION" -m "Release v$VERSION"
+git push origin "v$VERSION"
 ```
 
 Tag pushes publish a non-draft release through the workflow. Use manual dispatch
@@ -88,7 +96,7 @@ assets instead of local `dist/` files:
 
 ```bash
 bash scripts/verify_hosted_release.sh \
-  --version 1.0.0 \
+  --version "$VERSION" \
   --platform multi \
   --require-trust \
   --check-channel-archive \
@@ -98,7 +106,7 @@ bash scripts/verify_hosted_release.sh \
   --require-platform windows-x86_64 \
   --install-smoke \
   --install-smoke-platform linux-x86_64 \
-  --report dist/hosted-validation/1.0.0/hosted-release-validation.json
+  --report "dist/hosted-validation/$VERSION/hosted-release-validation.json"
 ```
 
 The `Hosted Release Verify` workflow runs the same check on `release.published`
@@ -139,8 +147,10 @@ Before closing the release checklist, record:
 
 - GitHub Release URL.
 - `release-validation.json` workflow artifact.
+- `release-launch.json` and `RELEASE_LAUNCH_CHECKLIST.md` artifacts.
 - `conformance-validation.json` or `conformance-suite.json` workflow artifact.
 - `distribution-readiness.json` and `DISTRIBUTION_CHECKLIST.md` artifacts.
 - `hosted-release-validation.json` workflow artifact.
 - Package-channel archive name and hash.
+- Homebrew, Winget, and Debian/apt submission links or explicit deferrals.
 - Any manual deviations from this runbook.

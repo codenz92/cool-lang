@@ -209,6 +209,7 @@ def parse_payload_checksums(text):
 
 def validate_archive(asset, package_name, version):
     root, files = archive_payload_files(asset, package_name, version)
+    release_record = f"docs/RELEASE_{version.replace('.', '_')}.md"
     required = [
         f"{root}/bin/{binary_name(asset.platform)}",
         f"{root}/README.md",
@@ -233,6 +234,8 @@ def validate_archive(asset, package_name, version):
         f"{root}/docs/LANGUAGE_REFERENCE.md",
         f"{root}/docs/NATIVE_COMPILER.md",
         f"{root}/docs/STDLIB_OVERVIEW.md",
+        f"{root}/docs/PACKAGE_MANAGER_SUBMISSIONS.md",
+        f"{root}/{release_record}",
         f"{root}/conformance/manifest.json",
         f"{root}/conformance/runtime/core_language.cool",
         f"{root}/conformance/runtime/typed_language.cool",
@@ -240,6 +243,8 @@ def validate_archive(asset, package_name, version):
         f"{root}/conformance/check/strict_typed_api.cool",
         f"{root}/conformance/check/non_exhaustive_match.cool",
         f"{root}/scripts/release_candidate.sh",
+        f"{root}/scripts/release_launch_check.sh",
+        f"{root}/scripts/release_launch_check.py",
         f"{root}/scripts/promote_release.sh",
         f"{root}/scripts/trust_release.py",
         f"{root}/scripts/publish_release.sh",

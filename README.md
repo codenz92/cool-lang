@@ -875,7 +875,8 @@ cargo run --release --bin bench_compare -- --runs 5 --warmups 1
 bash scripts/conformance_suite.sh
 
 # Audit package-channel distribution readiness
-bash scripts/distribution_readiness.sh --version 1.0.0
+bash scripts/release_launch_check.sh --version 1.1.0
+bash scripts/distribution_readiness.sh --version 1.1.0
 
 # Dogfood release/adoption health from Cool code
 ./target/release/cool apps/release_audit.cool --strict
@@ -883,8 +884,8 @@ bash scripts/distribution_readiness.sh --version 1.0.0
 
 Longer documentation now lives under [`docs/`](docs/README.md), including
 language reference, native compiler, stdlib overview, compatibility policy,
-conformance, distribution, dogfooding, adoption, install, support, release
-validation, and release trust operations.
+conformance, distribution, package-manager submissions, dogfooding, adoption,
+install, support, release validation, and release trust operations.
 
 ### Release Gate
 
@@ -903,7 +904,7 @@ Phase 26 adds a compact compatibility suite for the stable 1.x language surface:
 ```bash
 bash scripts/conformance_suite.sh
 bash scripts/conformance_suite.sh --skip-native
-bash scripts/conformance_suite.sh --report dist/validation/1.0.0/conformance-validation.json
+bash scripts/conformance_suite.sh --report dist/validation/1.1.0/conformance-validation.json
 ```
 
 The suite is driven by `conformance/manifest.json`, covers runtime parity and
@@ -913,12 +914,19 @@ static diagnostics, and emits JSON reports for CI or release evidence. See
 
 ### Distribution And Dogfooding
 
-Phase 27 adds a package-channel readiness audit and a Cool-written release audit
-app:
+Phase 28 adds a launch-identity check on top of the package-channel readiness
+audit and Cool-written release audit app:
 
 ```bash
+bash scripts/release_launch_check.sh \
+  --version 1.1.0 \
+  --require-unreleased-tag \
+  --require-newer-than-latest-tag \
+  --report dist/validation/1.1.0/release-launch.json \
+  --write-checklist dist/validation/1.1.0/RELEASE_LAUNCH_CHECKLIST.md
+
 bash scripts/distribution_readiness.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-platform linux-x86_64 \
   --require-platform macos-x86_64 \
   --require-platform macos-arm64 \
@@ -928,7 +936,9 @@ bash scripts/distribution_readiness.sh \
 ```
 
 See [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) and
-[`docs/DOGFOODING.md`](docs/DOGFOODING.md).
+[`docs/DOGFOODING.md`](docs/DOGFOODING.md). Package-manager submission steps
+are tracked in
+[`docs/PACKAGE_MANAGER_SUBMISSIONS.md`](docs/PACKAGE_MANAGER_SUBMISSIONS.md).
 
 ### Release Candidate Build
 
@@ -953,7 +963,7 @@ The script only creates local distribution artifacts; it does not create git tag
 Promote a validated release candidate into upload-ready release assets:
 
 ```bash
-bash scripts/promote_release.sh --version 1.0.0
+bash scripts/promote_release.sh --version 1.1.0
 ```
 
 Promotion validates the RC manifest, `checksums.txt`, archive layout, release-gate status, git commit, and worktree cleanliness before writing `dist/releases/<version>/`. The promoted directory contains the platform tarball, platform manifest/checksum sidecars, `RELEASE.md`, `SHA256SUMS`, `release.json`, `latest.json`, and `install.sh`. By default the command does not create tags, push tags, upload GitHub releases, or publish packages; use `--create-tag` only when you explicitly want a local annotated tag.
@@ -962,7 +972,7 @@ Install from a promoted local artifact:
 
 ```bash
 bash install.sh \
-  --from dist/releases/1.0.0/cool-1.0.0-macos-arm64.tar.gz \
+  --from dist/releases/1.1.0/cool-1.1.0-macos-arm64.tar.gz \
   --prefix "$HOME/.local"
 ```
 
@@ -970,7 +980,7 @@ Install from a hosted GitHub release:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/codenz92/cool-lang/master/install.sh \
-  | bash -s -- --version 1.0.0 --prefix "$HOME/.local"
+  | bash -s -- --version 1.1.0 --prefix "$HOME/.local"
 ```
 
 Use `--verify-sha256 <hash>` with the archive hash from `SHA256SUMS` when installing from a downloaded asset. See `docs/INSTALL.md` for local, hosted, mirror, and smoke-test details.
@@ -980,32 +990,32 @@ Use `--verify-sha256 <hash>` with the archive hash from `SHA256SUMS` when instal
 Generate SBOM, provenance, trust metadata, and optional detached signatures for a promoted release:
 
 ```bash
-bash scripts/trust_release.sh generate --version 1.0.0
+bash scripts/trust_release.sh generate --version 1.1.0
 ```
 
 `scripts/promote_release.sh` runs the trust generator by default. The trust layer writes `sbom.spdx.json`, `provenance.intoto.json`, `trust.json`, and `TRUST_SHA256SUMS`; when `--sign-key <private-key.pem>` is provided it also signs `SHA256SUMS`, `release.json`, provenance, SBOM, and trust metadata using OpenSSL detached signatures. Verify the unsigned hash chain, or verify signatures with a public key:
 
 ```bash
-bash scripts/trust_release.sh verify --version 1.0.0
-bash scripts/trust_release.sh verify --version 1.0.0 --verify-key release-signing-public.pem
+bash scripts/trust_release.sh verify --version 1.1.0
+bash scripts/trust_release.sh verify --version 1.1.0 --verify-key release-signing-public.pem
 ```
 
 Dry-run GitHub Release publishing:
 
 ```bash
-bash scripts/publish_release.sh --version 1.0.0
+bash scripts/publish_release.sh --version 1.1.0
 ```
 
 Publish with the GitHub CLI after trust verification:
 
 ```bash
-bash scripts/publish_release.sh --version 1.0.0 --publish --no-draft
+bash scripts/publish_release.sh --version 1.1.0 --publish --no-draft
 ```
 
 The `Published Release` GitHub Actions workflow remains available for manual single-platform release drills. Public tag publishing is owned by the multi-platform `Release Matrix` workflow so a `v*` tag cannot race a single-platform GitHub Release against the final matrix release. The installer can verify release metadata before installing:
 
 ```bash
-bash install.sh --version 1.0.0 --verify-metadata
+bash install.sh --version 1.1.0 --verify-metadata
 ```
 
 ### Multi-Platform Matrix And Package Channels
@@ -1020,8 +1030,8 @@ bash scripts/promote_release.sh --platform linux-x86_64 --skip-trust
 The aggregate job uses:
 
 ```bash
-bash scripts/assemble_matrix_release.sh --source-dir dist/matrix-input --version 1.0.0
-bash scripts/package_channels.sh generate --version 1.0.0
+bash scripts/assemble_matrix_release.sh --source-dir dist/matrix-input --version 1.1.0
+bash scripts/package_channels.sh generate --version 1.1.0
 ```
 
 Release candidates now emit both `.tar.gz` and `.zip` archives. The installer defaults to `.zip` for Windows platforms and `.tar.gz` for macOS/Linux. Package-channel generation writes `channels.json`, `CHANNEL_SHA256SUMS`, a Homebrew formula, Winget portable manifests when a Windows zip exists, Debian/apt metadata when a Linux x86_64 tarball exists, and `cool-<version>-package-channels.tar.gz` for upload as a release asset. See `docs/PACKAGE_CHANNELS.md` for the channel layout and required-platform checks.
@@ -1032,7 +1042,7 @@ Validate a promoted release before publishing:
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-trust \
   --require-channels \
   --install-smoke
@@ -1042,7 +1052,7 @@ For a multi-platform release, require every public platform:
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --require-channels \
@@ -1060,7 +1070,7 @@ After a GitHub Release or mirror is public, verify the uploaded assets from the 
 
 ```bash
 bash scripts/verify_hosted_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --check-channel-archive \
@@ -1074,7 +1084,7 @@ bash scripts/verify_hosted_release.sh \
 
 The hosted verifier downloads release metadata, archives, trust files, and the package-channel archive before checking hashes, sizes, archive layout, payload checksums, trust references, channel checksums, and installer behavior. The `Hosted Release Verify` workflow runs this check on published releases and can be manually dispatched for mirrors. See `docs/RELEASE_RUNBOOK.md` and `docs/SUPPORT_MATRIX.md` for the release-day checklist, rollback path, and supported-platform contract.
 
-The public `v1.0.0` release is live at https://github.com/codenz92/cool-lang/releases/tag/v1.0.0. The release evidence record, including matrix run IDs, hosted verification, and installer audit, is in `docs/RELEASE_1_0_0.md`.
+The public `v1.0.0` release is live at https://github.com/codenz92/cool-lang/releases/tag/v1.0.0. The 1.1.0 launch record is prepared in `docs/RELEASE_1_1_0.md`; after the `v1.1.0` matrix publishes and hosted verification passes, record final workflow links there.
 
 ### Project workflow
 
@@ -1165,7 +1175,7 @@ debug = true                  # optional: emit DWARF/line locations for native b
 no_libc = false               # optional: skip the hosted runtime/libc assumptions where supported
 
 [toolchain]
-cool = "1.0.0"               # optional: pin the Cool CLI version expected by this project
+cool = "1.1.0"               # optional: pin the Cool CLI version expected by this project
 cc = "clang"                 # optional: C compiler for hosted native links
 ar = "llvm-ar"               # optional: archiver for static libraries
 lld = "ld.lld"               # optional: linker for kernel-image flows
@@ -1565,6 +1575,7 @@ examples/
 | 25 — Public 1.0.0 release execution | ✅ Complete |
 | 26 — Post-1.0 adoption and compatibility | ✅ Complete |
 | 27 — Distribution, documentation, and dogfooding | ✅ Complete |
+| 28 — Public 1.1.0 release launch | ✅ Complete |
 
 See [`ROADMAP.md`](ROADMAP.md) for the full breakdown.
 

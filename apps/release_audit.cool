@@ -5,7 +5,7 @@ import sys
 import toml
 
 def usage():
-    print("release_audit v1.0 — audit Cool repo release and adoption health")
+    print("release_audit v1.1 — audit Cool repo release and adoption health")
     print("  cool apps/release_audit.cool [--root PATH] [--json] [--strict]")
 
 def join(root, rel):
@@ -64,12 +64,15 @@ def audit(root, strict=false):
         "docs/LANGUAGE_REFERENCE.md",
         "docs/NATIVE_COMPILER.md",
         "docs/STDLIB_OVERVIEW.md",
+        "docs/PACKAGE_MANAGER_SUBMISSIONS.md",
         "docs/PACKAGE_CHANNELS.md",
         "docs/RELEASE_RUNBOOK.md",
         "docs/RELEASE_VALIDATION.md",
         "docs/SUPPORT_MATRIX.md",
+        "docs/RELEASE_1_1_0.md",
         "conformance/manifest.json",
         "scripts/conformance_suite.py",
+        "scripts/release_launch_check.py",
         "scripts/distribution_readiness.py",
         "scripts/performance_baseline.py",
         "scripts/release_gate.sh",
@@ -84,9 +87,14 @@ def audit(root, strict=false):
 
     check_contains(checks, root, "scripts/release_gate.sh", "conformance_suite.sh")
     check_contains(checks, root, "scripts/release_gate.sh", "release_audit.cool")
+    check_contains(checks, root, "scripts/release_gate.sh", "release_launch_check.sh")
     check_contains(checks, root, "scripts/release_candidate.sh", "distribution_readiness.py")
+    check_contains(checks, root, "scripts/release_candidate.sh", "release_launch_check.py")
     check_contains(checks, root, "scripts/validate_release.py", "distribution_readiness.py")
-    check_contains(checks, root, "ROADMAP.md", "Phase 27")
+    check_contains(checks, root, "scripts/validate_release.py", "PACKAGE_MANAGER_SUBMISSIONS.md")
+    check_contains(checks, root, ".github/workflows/release-validation.yml", "release_launch_check.sh")
+    check_contains(checks, root, ".github/workflows/release-matrix.yml", "release_launch_check.sh")
+    check_contains(checks, root, "ROADMAP.md", "Phase 28")
 
     cargo_path = join(root, "Cargo.toml")
     if os["exists"](cargo_path):
@@ -107,8 +115,12 @@ def audit(root, strict=false):
         for rel in [
             "scripts/distribution_readiness.sh",
             "scripts/distribution_readiness.py",
+            "scripts/release_launch_check.sh",
+            "scripts/release_launch_check.py",
             "docs/DISTRIBUTION.md",
             "docs/DOGFOODING.md",
+            "docs/PACKAGE_MANAGER_SUBMISSIONS.md",
+            "docs/RELEASE_1_1_0.md",
         ]:
             check_file(checks, root, rel)
 

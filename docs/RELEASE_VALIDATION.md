@@ -5,11 +5,24 @@ assets, trust metadata, installer behavior, and package-channel files. It is
 designed to run locally, in pull-request CI, in the release matrix aggregate job,
 and immediately before GitHub Release publishing.
 
+Phase 28 adds a launch-identity check before artifact publishing. It verifies
+that the release version, changelog, versioned release record, launch evidence
+docs, workflows, and package-manager submission gates all agree:
+
+```bash
+bash scripts/release_launch_check.sh \
+  --version 1.1.0 \
+  --require-unreleased-tag \
+  --require-newer-than-latest-tag \
+  --report dist/validation/1.1.0/release-launch.json \
+  --write-checklist dist/validation/1.1.0/RELEASE_LAUNCH_CHECKLIST.md
+```
+
 ## Validate A Promoted Release
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform macos-arm64 \
   --require-trust \
   --require-channels \
@@ -36,7 +49,7 @@ For a full matrix release, require all public platforms:
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --require-channels \
@@ -51,7 +64,7 @@ asset:
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --require-channels \
@@ -65,33 +78,36 @@ Validation can emit a machine-readable report:
 
 ```bash
 bash scripts/validate_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-trust \
   --require-channels \
-  --report dist/validation/1.0.0/release-validation.json
+  --report dist/validation/1.1.0/release-validation.json
 ```
 
 The report records the release platform, platforms discovered, archive count,
 checksum counts, channel counts, and installer smoke target.
 
+The launch check emits `release-launch.json` plus an optional
+`RELEASE_LAUNCH_CHECKLIST.md` before release artifacts are built.
+
 The Phase 26 conformance suite can emit a separate compatibility report:
 
 ```bash
 bash scripts/conformance_suite.sh \
-  --report dist/validation/1.0.0/conformance-validation.json
+  --report dist/validation/1.1.0/conformance-validation.json
 ```
 
 The Phase 27 distribution readiness audit can emit package-index evidence:
 
 ```bash
 bash scripts/distribution_readiness.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-platform linux-x86_64 \
   --require-platform macos-x86_64 \
   --require-platform macos-arm64 \
   --require-platform windows-x86_64 \
-  --report dist/validation/1.0.0/distribution-readiness.json \
-  --write-checklist dist/validation/1.0.0/DISTRIBUTION_CHECKLIST.md
+  --report dist/validation/1.1.0/distribution-readiness.json \
+  --write-checklist dist/validation/1.1.0/DISTRIBUTION_CHECKLIST.md
 ```
 
 ## Hosted Release Verification
@@ -101,7 +117,7 @@ hosted URLs rather than local `dist/` files:
 
 ```bash
 bash scripts/verify_hosted_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --check-channel-archive \
@@ -131,7 +147,7 @@ When a real four-platform matrix is too expensive for every pull request, run a
 synthetic matrix smoke test from one promoted host release:
 
 ```bash
-bash scripts/smoke_matrix_release.sh --version 1.0.0
+bash scripts/smoke_matrix_release.sh --version 1.1.0
 ```
 
 The smoke driver repacks the host payload into Linux, macOS Intel, macOS Arm, and
@@ -145,12 +161,13 @@ tag is cut.
 ## Release Checklist
 
 1. `bash scripts/release_gate.sh`
-2. `bash scripts/conformance_suite.sh --report dist/validation/<version>/conformance-validation.json`
-3. `cool apps/release_audit.cool --strict`
-4. `bash scripts/release_candidate.sh --require-clean`
-5. `bash scripts/promote_release.sh --version <version>`
-6. `bash scripts/package_channels.sh generate --version <version>`
-7. `bash scripts/distribution_readiness.sh --version <version> --report dist/validation/<version>/distribution-readiness.json`
-8. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
-9. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
-10. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.
+2. `bash scripts/release_launch_check.sh --version <version> --require-unreleased-tag --report dist/validation/<version>/release-launch.json`
+3. `bash scripts/conformance_suite.sh --report dist/validation/<version>/conformance-validation.json`
+4. `cool apps/release_audit.cool --strict`
+5. `bash scripts/release_candidate.sh --require-clean`
+6. `bash scripts/promote_release.sh --version <version>`
+7. `bash scripts/package_channels.sh generate --version <version>`
+8. `bash scripts/distribution_readiness.sh --version <version> --report dist/validation/<version>/distribution-readiness.json`
+9. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
+10. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
+11. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.

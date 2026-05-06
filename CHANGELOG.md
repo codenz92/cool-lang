@@ -2,7 +2,16 @@
 
 All notable changes to the Cool language project.
 
-## [Unreleased] - Phase 27 Complete
+## [1.1.0] - 2026-05-06 - Phase 28 Complete
+
+### Phase 28 — Public 1.1.0 Release Launch
+
+- Bumped the Cool package and user-visible executable/LSP version to `1.1.0`, with runtime banners now reading the Cargo package version instead of hardcoded release text
+- Added `scripts/release_launch_check.sh` / `.py` to audit release identity before publishing, including Cargo/Cargo.lock alignment, changelog uniqueness, launch evidence docs, package-manager submission docs, workflow wiring, and required-platform release operations
+- Added `docs/RELEASE_1_1_0.md` as the prepared 1.1.0 release record and `docs/PACKAGE_MANAGER_SUBMISSIONS.md` for Homebrew, Winget, and Debian/apt submission gates after hosted verification
+- Wired the launch check into the release gate, release-validation workflow, release-matrix workflow, and published-release workflow, with JSON reports and Markdown launch checklists under `dist/validation/<version>/`
+- Release candidates now package versioned release records, package-manager submission docs, and launch-check tooling; release validation verifies those files are present in archives
+- Clarified the historical Phase 10 changelog entry so `1.1.0` uniquely identifies the public post-1.0 launch
 
 ### Phase 27 — Distribution, Documentation, And Dogfooding
 
@@ -361,7 +370,7 @@ All notable changes to the Cool language project.
 
 - First-party VS Code extension under `editors/vscode/`: `.cool` language registration, syntax highlighting, indentation rules, and `cool lsp` integration via `cool.lsp.serverCommand`
 
-## [1.1.0] - 2026-04-24 - Phase 10 Complete
+## [Pre-1.0 Phase 10 Milestone] - 2026-04-24
 
 ### Phase 10 — Production Readiness And Ecosystem (Complete)
 
@@ -609,4 +618,5 @@ The interpreter and bytecode VM now share full context-manager cleanup semantics
 
 ---
 
+[1.1.0]: https://github.com/codenz92/cool-lang/releases/tag/v1.1.0
 [1.0.0]: https://github.com/codenz92/cool-lang/releases/tag/v1.0.0

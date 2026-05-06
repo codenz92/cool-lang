@@ -29,6 +29,7 @@
 7. Public `v1.0.0` release shipped with a four-platform matrix, hosted verification, installer audit, trust metadata, and package channels
 8. Post-1.0 compatibility, conformance, documentation, adoption, and performance evidence loops
 9. Distribution readiness, structured documentation, and Cool-written dogfood release auditing
+10. Public `v1.1.0` launch preparation with version alignment, launch evidence, and package-manager submission gates
 
 ## Legend
 
@@ -866,6 +867,33 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 
 ---
 
+## Phase 28 — Public 1.1.0 Release Launch ✅ Complete
+
+> Goal: prepare the actual public `v1.1.0` launch without letting version, tag, changelog, release evidence, or package-manager metadata drift apart.
+
+### Version And Release Identity
+
+- [x] Cargo package metadata and `Cargo.lock` are bumped to `1.1.0`
+- [x] User-visible REPL/help and LSP version reporting read the Cargo package version instead of hardcoded `1.0.0` strings
+- [x] The changelog has a unique public `1.1.0` section and the old pre-public Phase 10 milestone no longer collides with the public release number
+- [x] `docs/RELEASE_1_1_0.md` records the prepared launch scope, required platforms, launch commands, and evidence placeholders
+
+### Launch Gate
+
+- [x] `scripts/release_launch_check.sh` / `.py` validate Cargo/Cargo.lock version alignment, local tag state, changelog uniqueness, versioned release records, package-manager submission docs, workflow wiring, and required-platform release operations
+- [x] The launch check can emit `release-launch.json` and `RELEASE_LAUNCH_CHECKLIST.md` artifacts under `dist/validation/<version>/`
+- [x] The release gate runs the launch check after the Cool-written release audit
+- [x] Release validation, release matrix, and published-release workflows run the launch check before building or publishing artifacts
+
+### Package-Manager Launch
+
+- [x] `docs/PACKAGE_MANAGER_SUBMISSIONS.md` defines the Homebrew, Winget, and Debian/apt submission gates after hosted verification
+- [x] Release candidates package versioned release records, package-manager submission docs, and launch-check tooling
+- [x] Release validation verifies the versioned release record, package-manager submission doc, and launch-check scripts are present in release archives
+- [x] `apps/release_audit.cool --strict` checks the Phase 28 launch surfaces and workflow wiring from Cool code
+
+---
+
 ## Summary
 
 | Phase | Status |
@@ -897,3 +925,4 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 | 25 — Public 1.0.0 Release Execution | ✅ Complete |
 | 26 — Post-1.0 Adoption And Compatibility | ✅ Complete |
 | 27 — Distribution, Documentation, And Dogfooding | ✅ Complete |
+| 28 — Public 1.1.0 Release Launch | ✅ Complete |

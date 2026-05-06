@@ -31,6 +31,8 @@ checks the same public contract from the user's point of view:
 
 - Phase 26 conformance cases for stable runtime parity and static diagnostics.
 - Phase 27 distribution readiness for package-manager submission metadata.
+- Phase 28 launch checks for version, tag, changelog, release evidence, and
+  package-manager submission gates.
 - `release.json`, `latest.json`, and `SHA256SUMS` hashes and sizes.
 - Platform tarball and zip payload roots, manifests, payload checksums, docs, and release scripts.
 - SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS` when trust is required.

@@ -83,6 +83,10 @@ jobs:
             VERSION_VALUE="$(python3 -c 'import re, pathlib; print(re.search(r"(?m)^version\s*=\s*\"([^\"]+)\"", pathlib.Path("Cargo.toml").read_text(encoding="utf-8")).group(1))')"
           fi
 
+          bash scripts/release_launch_check.sh "${CHANNEL_ARGS[@]}" \
+            --report "dist/validation/$VERSION_VALUE/release-launch.json" \
+            --write-checklist "dist/validation/$VERSION_VALUE/RELEASE_LAUNCH_CHECKLIST.md"
+
           VERIFY_KEY=""
           if [[ -n "$COOL_RELEASE_SIGNING_KEY_B64" ]]; then
             SIGN_KEY="$RUNNER_TEMP/cool-release-signing-key.pem"

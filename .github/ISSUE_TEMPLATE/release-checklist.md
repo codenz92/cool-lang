@@ -16,6 +16,7 @@ assignees: ""
 ## Pre-Release Gate
 
 - [ ] `bash scripts/release_gate.sh`
+- [ ] `bash scripts/release_launch_check.sh --version <version> --require-unreleased-tag --report dist/validation/<version>/release-launch.json --write-checklist dist/validation/<version>/RELEASE_LAUNCH_CHECKLIST.md`
 - [ ] `bash scripts/conformance_suite.sh --report dist/validation/<version>/conformance-validation.json`
 - [ ] `bash scripts/release_candidate.sh --require-clean --version <version>`
 - [ ] `bash scripts/promote_release.sh --version <version>`
@@ -38,6 +39,7 @@ assignees: ""
 - [ ] `bash scripts/verify_hosted_release.sh --version <version> --platform multi --require-trust --check-channel-archive --install-smoke --install-smoke-platform linux-x86_64`
 - [ ] Install docs and support matrix still match the uploaded assets.
 - [ ] Release notes include hashes, trust metadata, and package-channel instructions.
+- [ ] `docs/RELEASE_<version>.md` includes final workflow links, hosted verification evidence, installer audit, and package-manager submission status.
 
 ## Rollback / Follow-Up
 

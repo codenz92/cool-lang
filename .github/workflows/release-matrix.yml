@@ -122,13 +122,18 @@ jobs:
           if [[ -z "$VERSION_INPUT" && "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
             VERSION_INPUT="${GITHUB_REF_NAME#v}"
           fi
+          VERSION_ARGS=()
           if [[ -n "$VERSION_INPUT" ]]; then
-            bash scripts/release_candidate.sh --require-clean --version "$VERSION_INPUT" --platform "$PLATFORM"
-            bash scripts/promote_release.sh --version "$VERSION_INPUT" --platform "$PLATFORM" --skip-trust
-          else
-            bash scripts/release_candidate.sh --require-clean --platform "$PLATFORM"
-            bash scripts/promote_release.sh --platform "$PLATFORM" --skip-trust
+            VERSION_ARGS=(--version "$VERSION_INPUT")
           fi
+          VERSION_VALUE="$VERSION_INPUT"
+          if [[ -z "$VERSION_VALUE" ]]; then
+            VERSION_VALUE="$(python3 -c 'import re, pathlib; print(re.search(r"(?m)^version\s*=\s*\"([^\"]+)\"", pathlib.Path("Cargo.toml").read_text(encoding="utf-8")).group(1))')"
+          fi
+          bash scripts/release_launch_check.sh "${VERSION_ARGS[@]}" \
+            --report "dist/validation/$VERSION_VALUE/release-launch-$PLATFORM.json"
+          bash scripts/release_candidate.sh --require-clean "${VERSION_ARGS[@]}" --platform "$PLATFORM"
+          bash scripts/promote_release.sh "${VERSION_ARGS[@]}" --platform "$PLATFORM" --skip-trust
 
       - name: Upload platform assets
         uses: actions/upload-artifact@v4
@@ -137,6 +142,7 @@ jobs:
           path: |
             dist/release-candidate/**
             dist/releases/**
+            dist/validation/**
 
   assemble:
     name: Assemble multi-platform release
@@ -178,6 +184,10 @@ jobs:
           if [[ -z "$VERSION_VALUE" ]]; then
             VERSION_VALUE="$(python3 -c 'import re, pathlib; print(re.search(r"(?m)^version\s*=\s*\"([^\"]+)\"", pathlib.Path("Cargo.toml").read_text(encoding="utf-8")).group(1))')"
           fi
+
+          bash scripts/release_launch_check.sh "${VERSION_ARGS[@]}" \
+            --report "dist/validation/$VERSION_VALUE/release-launch.json" \
+            --write-checklist "dist/validation/$VERSION_VALUE/RELEASE_LAUNCH_CHECKLIST.md"
 
           bash scripts/assemble_matrix_release.sh --source-dir dist/matrix-input "${VERSION_ARGS[@]}"
 

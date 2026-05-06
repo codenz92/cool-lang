@@ -54,6 +54,7 @@ jobs:
             scripts/verify_hosted_release.sh \
             scripts/smoke_matrix_release.sh \
             scripts/conformance_suite.sh \
+            scripts/release_launch_check.sh \
             scripts/distribution_readiness.sh \
             scripts/performance_baseline.sh
           python3 -m py_compile \
@@ -64,10 +65,15 @@ jobs:
             scripts/verify_hosted_release.py \
             scripts/smoke_matrix_release.py \
             scripts/conformance_suite.py \
+            scripts/release_launch_check.py \
             scripts/distribution_readiness.py \
             scripts/performance_baseline.py
           find scripts -name __pycache__ -type d -prune -exec rm -rf {} +
 
+          bash scripts/release_launch_check.sh \
+            --version "$VERSION" \
+            --report "dist/validation/$VERSION/release-launch.json" \
+            --write-checklist "dist/validation/$VERSION/RELEASE_LAUNCH_CHECKLIST.md"
           bash scripts/release_candidate.sh --skip-gate --platform macos-arm64
           COOL_BIN="$PWD/target/release/cool" bash scripts/conformance_suite.sh \
             --skip-native \

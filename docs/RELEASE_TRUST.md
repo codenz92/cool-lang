@@ -7,7 +7,7 @@ Releases, mirrored, or verified offline.
 ## Generate
 
 ```bash
-bash scripts/trust_release.sh generate --version 1.0.0
+bash scripts/trust_release.sh generate --version 1.1.0
 ```
 
 This validates the promoted `SHA256SUMS` file and writes:
@@ -26,7 +26,7 @@ If an OpenSSL private key is available, sign the trust-critical metadata:
 
 ```bash
 bash scripts/trust_release.sh generate \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --sign-key release-signing-key.pem
 ```
 
@@ -48,14 +48,14 @@ signatures are emitted.
 Verify unsigned hash/provenance metadata:
 
 ```bash
-bash scripts/trust_release.sh verify --version 1.0.0
+bash scripts/trust_release.sh verify --version 1.1.0
 ```
 
 Verify detached signatures as well:
 
 ```bash
 bash scripts/trust_release.sh verify \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --verify-key release-signing-public.pem
 ```
 
@@ -64,13 +64,13 @@ bash scripts/trust_release.sh verify \
 Dry-run a publish:
 
 ```bash
-bash scripts/publish_release.sh --version 1.0.0
+bash scripts/publish_release.sh --version 1.1.0
 ```
 
 Publish with the GitHub CLI:
 
 ```bash
-bash scripts/publish_release.sh --version 1.0.0 --publish --no-draft
+bash scripts/publish_release.sh --version 1.1.0 --publish --no-draft
 ```
 
 The script verifies the trust metadata before uploading assets with `gh`.

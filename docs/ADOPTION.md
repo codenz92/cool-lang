@@ -28,7 +28,7 @@ release URL and channel archive:
 
 ```bash
 bash scripts/verify_hosted_release.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --platform multi \
   --require-trust \
   --check-channel-archive \
@@ -43,18 +43,26 @@ local `dist/` files. If an index requires a different archive shape, add that
 shape to `scripts/package_channels.py` and validate it in
 `scripts/validate_release.py` before publishing.
 
-Phase 27 adds a package-index readiness audit:
+Phase 27 adds a package-index readiness audit, and Phase 28 adds a launch check
+for version/tag/evidence alignment:
 
 ```bash
+bash scripts/release_launch_check.sh \
+  --version 1.1.0 \
+  --report dist/distribution/1.1.0/release-launch.json \
+  --write-checklist dist/distribution/1.1.0/RELEASE_LAUNCH_CHECKLIST.md
 bash scripts/distribution_readiness.sh \
-  --version 1.0.0 \
+  --version 1.1.0 \
   --require-platform linux-x86_64 \
   --require-platform macos-x86_64 \
   --require-platform macos-arm64 \
   --require-platform windows-x86_64 \
-  --report dist/distribution/1.0.0/distribution-readiness.json \
-  --write-checklist dist/distribution/1.0.0/DISTRIBUTION_CHECKLIST.md
+  --report dist/distribution/1.1.0/distribution-readiness.json \
+  --write-checklist dist/distribution/1.1.0/DISTRIBUTION_CHECKLIST.md
 ```
+
+Use `docs/PACKAGE_MANAGER_SUBMISSIONS.md` when turning generated channel output
+into Homebrew, Winget, or Debian/apt submissions after hosted verification.
 
 ## Documentation
 
@@ -71,7 +79,7 @@ Prefer focused pages:
 
 The current structured entry points are `docs/LANGUAGE_REFERENCE.md`,
 `docs/NATIVE_COMPILER.md`, `docs/STDLIB_OVERVIEW.md`, `docs/DISTRIBUTION.md`,
-and `docs/DOGFOODING.md`.
+`docs/PACKAGE_MANAGER_SUBMISSIONS.md`, and `docs/DOGFOODING.md`.
 
 ## Performance Baselines
 
