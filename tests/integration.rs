@@ -8912,6 +8912,27 @@ fn test_pulse_and_control_apps_run_checks_from_manifest() {
 }
 
 #[test]
+fn test_release_audit_app_reports_phase27_surface() {
+    let output = Command::new(cool_bin())
+        .args(["apps/release_audit.cool", "--strict", "--json"])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "stdout:\n{}\nstderr:\n{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains("\"failed\":0"), "stdout:\n{stdout}");
+    assert!(stdout.contains("docs/DISTRIBUTION.md exists"), "stdout:\n{stdout}");
+    assert!(
+        stdout.contains("scripts/distribution_readiness.py exists"),
+        "stdout:\n{stdout}"
+    );
+}
+
+#[test]
 fn test_example_coolboard_builds_and_serves_health() {
     let repo_root = std::env::current_dir().unwrap();
     let source_dir = repo_root.join("examples").join("coolboard");

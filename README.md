@@ -873,10 +873,17 @@ cargo run --release --bin bench_compare -- --runs 5 --warmups 1
 
 # Run the post-1.0 compatibility conformance suite
 bash scripts/conformance_suite.sh
+
+# Audit package-channel distribution readiness
+bash scripts/distribution_readiness.sh --version 1.0.0
+
+# Dogfood release/adoption health from Cool code
+./target/release/cool apps/release_audit.cool --strict
 ```
 
 Longer documentation now lives under [`docs/`](docs/README.md), including
-compatibility policy, conformance, adoption, install, support, release
+language reference, native compiler, stdlib overview, compatibility policy,
+conformance, distribution, dogfooding, adoption, install, support, release
 validation, and release trust operations.
 
 ### Release Gate
@@ -903,6 +910,25 @@ The suite is driven by `conformance/manifest.json`, covers runtime parity and
 static diagnostics, and emits JSON reports for CI or release evidence. See
 [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) and
 [`docs/CONFORMANCE.md`](docs/CONFORMANCE.md).
+
+### Distribution And Dogfooding
+
+Phase 27 adds a package-channel readiness audit and a Cool-written release audit
+app:
+
+```bash
+bash scripts/distribution_readiness.sh \
+  --version 1.0.0 \
+  --require-platform linux-x86_64 \
+  --require-platform macos-x86_64 \
+  --require-platform macos-arm64 \
+  --require-platform windows-x86_64
+
+./target/release/cool apps/release_audit.cool --strict --json
+```
+
+See [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) and
+[`docs/DOGFOODING.md`](docs/DOGFOODING.md).
 
 ### Release Candidate Build
 
@@ -1538,6 +1564,7 @@ examples/
 | 24 — Real public release and post-release operations | ✅ Complete |
 | 25 — Public 1.0.0 release execution | ✅ Complete |
 | 26 — Post-1.0 adoption and compatibility | ✅ Complete |
+| 27 — Distribution, documentation, and dogfooding | ✅ Complete |
 
 See [`ROADMAP.md`](ROADMAP.md) for the full breakdown.
 

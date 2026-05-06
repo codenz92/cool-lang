@@ -30,6 +30,7 @@ verification downloads the final assets from GitHub Releases or a mirror and
 checks the same public contract from the user's point of view:
 
 - Phase 26 conformance cases for stable runtime parity and static diagnostics.
+- Phase 27 distribution readiness for package-manager submission metadata.
 - `release.json`, `latest.json`, and `SHA256SUMS` hashes and sizes.
 - Platform tarball and zip payload roots, manifests, payload checksums, docs, and release scripts.
 - SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS` when trust is required.
@@ -46,5 +47,7 @@ checks the same public contract from the user's point of view:
   list before publishing and document the gap in release notes.
 - Do not publish a release with mismatched archive names, hashes, package-channel
   entries, or trust metadata.
+- Do not submit package-index updates until distribution readiness and hosted
+  verification pass.
 - Prefer a patch release over replacing assets after a public release has been
   announced or downloaded.

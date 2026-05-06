@@ -13,9 +13,11 @@ For each post-1.0 release:
 2. Run the release gate and conformance suite.
 3. Publish the matrix release only after validation and hosted verification pass.
 4. Regenerate package channels and verify the hosted channel archive.
-5. Record any supported-platform or compatibility-policy exception in release
+5. Run distribution readiness and keep its JSON report/checklist with release evidence.
+6. Run `apps/release_audit.cool --strict` before release.
+7. Record any supported-platform or compatibility-policy exception in release
    notes.
-6. Capture a performance baseline when native backend or runtime changes may
+8. Capture a performance baseline when native backend or runtime changes may
    affect benchmark behavior.
 
 ## Package Channels
@@ -41,6 +43,19 @@ local `dist/` files. If an index requires a different archive shape, add that
 shape to `scripts/package_channels.py` and validate it in
 `scripts/validate_release.py` before publishing.
 
+Phase 27 adds a package-index readiness audit:
+
+```bash
+bash scripts/distribution_readiness.sh \
+  --version 1.0.0 \
+  --require-platform linux-x86_64 \
+  --require-platform macos-x86_64 \
+  --require-platform macos-arm64 \
+  --require-platform windows-x86_64 \
+  --report dist/distribution/1.0.0/distribution-readiness.json \
+  --write-checklist dist/distribution/1.0.0/DISTRIBUTION_CHECKLIST.md
+```
+
 ## Documentation
 
 The top-level README remains the broad feature tour. New long-form docs should
@@ -53,6 +68,10 @@ Prefer focused pages:
 - Native compiler, FFI, and systems interop.
 - Standard library module families.
 - Release, validation, trust, and support operations.
+
+The current structured entry points are `docs/LANGUAGE_REFERENCE.md`,
+`docs/NATIVE_COMPILER.md`, `docs/STDLIB_OVERVIEW.md`, `docs/DISTRIBUTION.md`,
+and `docs/DOGFOODING.md`.
 
 ## Performance Baselines
 

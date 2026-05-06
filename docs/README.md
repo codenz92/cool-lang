@@ -6,9 +6,14 @@ or operationally specific for the top-level README.
 ## Start Here
 
 - `INSTALL.md` — local archive, hosted release, mirror, checksum, and smoke-test installs.
+- `LANGUAGE_REFERENCE.md` — stable 1.x language surface map.
+- `NATIVE_COMPILER.md` — native build, target, freestanding, and benchmark guidance.
+- `STDLIB_OVERVIEW.md` — standard library module families.
 - `COMPATIBILITY.md` — post-1.0 semantic versioning, runtime parity, platform, and deprecation policy.
 - `CONFORMANCE.md` — the compatibility suite manifest, runtime/check case rules, and report format.
 - `ADOPTION.md` — package-channel publication, documentation, and post-release adoption checklist.
+- `DISTRIBUTION.md` — package-manager distribution and readiness-audit workflow.
+- `DOGFOODING.md` — maintained Cool-written apps and dogfood rules.
 - `SUPPORT_MATRIX.md` — supported public platform and package-channel contract.
 
 ## Release Operations

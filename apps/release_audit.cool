@@ -1,0 +1,172 @@
+import json
+import os
+import path
+import sys
+import toml
+
+def usage():
+    print("release_audit v1.0 — audit Cool repo release and adoption health")
+    print("  cool apps/release_audit.cool [--root PATH] [--json] [--strict]")
+
+def join(root, rel):
+    return path.join(root, rel)
+
+def read_text(file_path):
+    f = open(file_path, "r")
+    text = f.read()
+    f.close()
+    return text
+
+def add_check(checks, name, ok, detail=""):
+    checks.append({
+        "name": name,
+        "ok": ok,
+        "detail": detail,
+    })
+
+def check_file(checks, root, rel):
+    file_path = join(root, rel)
+    add_check(checks, rel + " exists", os["exists"](file_path), file_path)
+
+def check_contains(checks, root, rel, needle):
+    file_path = join(root, rel)
+    if not os["exists"](file_path):
+        add_check(checks, rel + " contains " + needle, false, "missing " + file_path)
+        return
+    text = read_text(file_path)
+    add_check(checks, rel + " contains " + needle, needle in text, file_path)
+
+def get(mapping, key, default=nil):
+    if mapping != nil and type(mapping) == "dict" and key in mapping:
+        return mapping[key]
+    return default
+
+def load_json_file(file_path):
+    return json.loads(read_text(file_path))
+
+def load_toml_file(file_path):
+    return toml.loads(read_text(file_path))
+
+def audit(root, strict=false):
+    checks = []
+
+    for rel in [
+        "Cargo.toml",
+        "README.md",
+        "CHANGELOG.md",
+        "ROADMAP.md",
+        "docs/README.md",
+        "docs/COMPATIBILITY.md",
+        "docs/CONFORMANCE.md",
+        "docs/ADOPTION.md",
+        "docs/DISTRIBUTION.md",
+        "docs/DOGFOODING.md",
+        "docs/LANGUAGE_REFERENCE.md",
+        "docs/NATIVE_COMPILER.md",
+        "docs/STDLIB_OVERVIEW.md",
+        "docs/PACKAGE_CHANNELS.md",
+        "docs/RELEASE_RUNBOOK.md",
+        "docs/RELEASE_VALIDATION.md",
+        "docs/SUPPORT_MATRIX.md",
+        "conformance/manifest.json",
+        "scripts/conformance_suite.py",
+        "scripts/distribution_readiness.py",
+        "scripts/performance_baseline.py",
+        "scripts/release_gate.sh",
+        "scripts/release_candidate.sh",
+        "scripts/validate_release.py",
+        "apps/release_audit.cool",
+        ".github/workflows/conformance-suite.yml",
+        ".github/workflows/release-validation.yml",
+        ".github/workflows/release-matrix.yml",
+    ]:
+        check_file(checks, root, rel)
+
+    check_contains(checks, root, "scripts/release_gate.sh", "conformance_suite.sh")
+    check_contains(checks, root, "scripts/release_gate.sh", "release_audit.cool")
+    check_contains(checks, root, "scripts/release_candidate.sh", "distribution_readiness.py")
+    check_contains(checks, root, "scripts/validate_release.py", "distribution_readiness.py")
+    check_contains(checks, root, "ROADMAP.md", "Phase 27")
+
+    cargo_path = join(root, "Cargo.toml")
+    if os["exists"](cargo_path):
+        info = load_toml_file(cargo_path)
+        package = get(info, "package", {})
+        add_check(checks, "Cargo package name is cool", get(package, "name", "") == "cool", cargo_path)
+        add_check(checks, "Cargo package version is set", get(package, "version", "") != "", cargo_path)
+
+    manifest_path = join(root, "conformance/manifest.json")
+    if os["exists"](manifest_path):
+        manifest = load_json_file(manifest_path)
+        runtime_cases = get(manifest, "runtime_cases", [])
+        check_cases = get(manifest, "check_cases", [])
+        add_check(checks, "conformance has runtime cases", len(runtime_cases) >= 3, manifest_path)
+        add_check(checks, "conformance has static check cases", len(check_cases) >= 2, manifest_path)
+
+    if strict:
+        for rel in [
+            "scripts/distribution_readiness.sh",
+            "scripts/distribution_readiness.py",
+            "docs/DISTRIBUTION.md",
+            "docs/DOGFOODING.md",
+        ]:
+            check_file(checks, root, rel)
+
+    failed = 0
+    for check in checks:
+        if not check["ok"]:
+            failed = failed + 1
+
+    return {
+        "root": root,
+        "strict": strict,
+        "summary": {
+            "total": len(checks),
+            "passed": len(checks) - failed,
+            "failed": failed,
+        },
+        "checks": checks,
+    }
+
+def render(report):
+    summary = report["summary"]
+    print("release audit: " + str(summary["passed"]) + "/" + str(summary["total"]) + " checks passed")
+    for check in report["checks"]:
+        status = check["ok"] and "OK  " or "FAIL"
+        print(status + " " + check["name"])
+        if not check["ok"] and check["detail"] != "":
+            print("     " + check["detail"])
+
+argv = sys.argv
+root = os["getcwd"]()
+json_mode = false
+strict = false
+
+i = 1
+while i < len(argv):
+    arg = argv[i]
+    if arg == "--root":
+        if i + 1 >= len(argv):
+            raise "release_audit: --root requires a path"
+        root = argv[i + 1]
+        i = i + 2
+    elif arg == "--json":
+        json_mode = true
+        i = i + 1
+    elif arg == "--strict":
+        strict = true
+        i = i + 1
+    elif arg == "help" or arg == "--help" or arg == "-h":
+        usage()
+        exit(0)
+    else:
+        raise "release_audit: unexpected argument '" + arg + "'"
+
+report = audit(root, strict)
+if json_mode:
+    print(json.dumps(report))
+else:
+    render(report)
+
+if report["summary"]["failed"] > 0:
+    exit(1)

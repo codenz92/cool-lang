@@ -20,6 +20,7 @@ assignees: ""
 - [ ] `bash scripts/release_candidate.sh --require-clean --version <version>`
 - [ ] `bash scripts/promote_release.sh --version <version>`
 - [ ] `bash scripts/package_channels.sh generate --version <version>`
+- [ ] `bash scripts/distribution_readiness.sh --version <version> --report dist/validation/<version>/distribution-readiness.json --write-checklist dist/validation/<version>/DISTRIBUTION_CHECKLIST.md`
 - [ ] `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
 
 ## Matrix And Publishing
@@ -28,6 +29,7 @@ assignees: ""
 - [ ] Confirm Linux, macOS Intel, macOS Arm, and Windows artifacts are present.
 - [ ] Confirm `release-validation.json` passed and was uploaded.
 - [ ] Confirm package-channel archive is uploaded.
+- [ ] Confirm `distribution-readiness.json` passed and package submission checklist was uploaded.
 - [ ] Publish or promote the GitHub Release from draft.
 
 ## Post-Release Verification

@@ -28,6 +28,7 @@
 6. Release gate and CI-backed quality checks for routine shipping
 7. Public `v1.0.0` release shipped with a four-platform matrix, hosted verification, installer audit, trust metadata, and package channels
 8. Post-1.0 compatibility, conformance, documentation, adoption, and performance evidence loops
+9. Distribution readiness, structured documentation, and Cool-written dogfood release auditing
 
 ## Legend
 
@@ -833,6 +834,38 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 
 ---
 
+## Phase 27 — Distribution, Documentation, And Dogfooding ✅ Complete
+
+> Goal: make Cool easier to adopt by hardening public package-channel submission, splitting long-form docs into focused pages, and dogfooding release health with a real Cool app.
+
+### Distribution Readiness
+
+- [x] `scripts/distribution_readiness.sh` / `.py` audit promoted release assets and generated package channels for package-index submission readiness
+- [x] Distribution readiness checks release archive names and hashes, package-channel URLs, required-platform coverage, Homebrew formula references, Winget portable manifests, and Debian/apt metadata
+- [x] The readiness audit emits JSON reports and optional Markdown submission checklists under release validation artifacts
+- [x] Release validation, published-release, and release-matrix workflows run distribution readiness after channel generation
+
+### Structured Documentation
+
+- [x] `docs/DISTRIBUTION.md` documents immutable hosted asset requirements, package-channel generation, readiness auditing, hosted verification, and package-index targets
+- [x] `docs/DOGFOODING.md` documents maintained Cool-written apps, dogfood rules, and the release audit app
+- [x] `docs/LANGUAGE_REFERENCE.md`, `docs/NATIVE_COMPILER.md`, and `docs/STDLIB_OVERVIEW.md` split stable language, compiler, and stdlib material into focused docs
+- [x] `docs/README.md`, `README.md`, release docs, package-channel docs, support matrix, and adoption docs link the new Phase 27 surfaces
+
+### Dogfood Release Audit
+
+- [x] `apps/release_audit.cool` audits repo release/adoption health from Cool code using stable file, TOML, JSON, path, and stdlib behavior
+- [x] The release audit app checks Phase 26/27 docs, conformance assets, release scripts, workflows, package metadata, and roadmap coverage
+- [x] The release gate runs `apps/release_audit.cool --strict`
+- [x] Integration coverage confirms the release audit app reports a healthy repo in JSON mode
+
+### Release Packaging
+
+- [x] Release candidates package Phase 27 docs plus distribution readiness tooling
+- [x] Release validation verifies Phase 27 docs and scripts are present in release archives
+
+---
+
 ## Summary
 
 | Phase | Status |
@@ -863,3 +896,4 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 | 24 — Real Public Release And Post-Release Operations | ✅ Complete |
 | 25 — Public 1.0.0 Release Execution | ✅ Complete |
 | 26 — Post-1.0 Adoption And Compatibility | ✅ Complete |
+| 27 — Distribution, Documentation, And Dogfooding | ✅ Complete |

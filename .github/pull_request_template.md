@@ -15,3 +15,4 @@
 - [ ] Release docs or workflows updated when release behavior changed.
 - [ ] Hosted release verification considered when uploaded assets or install paths changed.
 - [ ] Compatibility policy and conformance cases considered when stable behavior changed.
+- [ ] Distribution readiness considered when package-channel metadata changed.

@@ -54,6 +54,7 @@ jobs:
             scripts/verify_hosted_release.sh \
             scripts/smoke_matrix_release.sh \
             scripts/conformance_suite.sh \
+            scripts/distribution_readiness.sh \
             scripts/performance_baseline.sh
           python3 -m py_compile \
             scripts/trust_release.py \
@@ -63,6 +64,7 @@ jobs:
             scripts/verify_hosted_release.py \
             scripts/smoke_matrix_release.py \
             scripts/conformance_suite.py \
+            scripts/distribution_readiness.py \
             scripts/performance_baseline.py
           find scripts -name __pycache__ -type d -prune -exec rm -rf {} +
 
@@ -72,6 +74,11 @@ jobs:
             --report "dist/validation/$VERSION/conformance-validation.json"
           bash scripts/promote_release.sh --version "$VERSION" --platform macos-arm64 --allow-skipped-gate
           bash scripts/package_channels.sh generate --version "$VERSION"
+          bash scripts/distribution_readiness.sh \
+            --version "$VERSION" \
+            --require-platform macos-arm64 \
+            --report "dist/validation/$VERSION/distribution-readiness.json" \
+            --write-checklist "dist/validation/$VERSION/DISTRIBUTION_CHECKLIST.md"
           bash scripts/validate_release.sh \
             --version "$VERSION" \
             --platform macos-arm64 \

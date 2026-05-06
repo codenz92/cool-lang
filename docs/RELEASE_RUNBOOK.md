@@ -27,6 +27,12 @@ bash scripts/conformance_suite.sh \
   --report dist/validation/1.0.0/conformance-validation.json
 ```
 
+Run the Cool-written release audit app:
+
+```bash
+./target/debug/cool apps/release_audit.cool --strict
+```
+
 Build and promote a local host candidate when you need a fast final sanity
 check before using the full matrix:
 
@@ -34,6 +40,11 @@ check before using the full matrix:
 bash scripts/release_candidate.sh --require-clean --version 1.0.0
 bash scripts/promote_release.sh --version 1.0.0
 bash scripts/package_channels.sh generate --version 1.0.0
+bash scripts/distribution_readiness.sh \
+  --version 1.0.0 \
+  --require-platform macos-arm64 \
+  --report dist/validation/1.0.0/distribution-readiness.json \
+  --write-checklist dist/validation/1.0.0/DISTRIBUTION_CHECKLIST.md
 bash scripts/validate_release.sh \
   --version 1.0.0 \
   --require-trust \
@@ -129,6 +140,7 @@ Before closing the release checklist, record:
 - GitHub Release URL.
 - `release-validation.json` workflow artifact.
 - `conformance-validation.json` or `conformance-suite.json` workflow artifact.
+- `distribution-readiness.json` and `DISTRIBUTION_CHECKLIST.md` artifacts.
 - `hosted-release-validation.json` workflow artifact.
 - Package-channel archive name and hash.
 - Any manual deviations from this runbook.

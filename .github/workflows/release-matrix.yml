@@ -202,6 +202,14 @@ jobs:
             --require-platform macos-arm64 \
             --require-platform windows-x86_64
 
+          bash scripts/distribution_readiness.sh "${VERSION_ARGS[@]}" \
+            --require-platform linux-x86_64 \
+            --require-platform macos-x86_64 \
+            --require-platform macos-arm64 \
+            --require-platform windows-x86_64 \
+            --report "dist/validation/$VERSION_VALUE/distribution-readiness.json" \
+            --write-checklist "dist/validation/$VERSION_VALUE/DISTRIBUTION_CHECKLIST.md"
+
           VALIDATE_ARGS=(
             --version "$VERSION_VALUE"
             --platform multi

@@ -2,9 +2,19 @@
 
 All notable changes to the Cool language project.
 
-## [Unreleased] - Phase 26 Complete
+## [Unreleased] - Phase 27 Complete
+
+### Phase 27 — Distribution, Documentation, And Dogfooding
+
+- Added `scripts/distribution_readiness.sh` / `.py` to audit promoted release assets and generated package channels before package-index submission, including archive names, hashes, hosted URLs, Homebrew, Winget, Debian/apt metadata, and required-platform coverage
+- Added JSON distribution-readiness reports and Markdown submission checklist output, and wired the audit into release validation, published-release, and release-matrix workflows
+- Added `docs/DISTRIBUTION.md`, `docs/DOGFOODING.md`, `docs/LANGUAGE_REFERENCE.md`, `docs/NATIVE_COMPILER.md`, and `docs/STDLIB_OVERVIEW.md` to split distribution, dogfooding, language, compiler, and stdlib material into focused docs
+- Added `apps/release_audit.cool`, a Cool-written repo health app that checks release/adoption docs, conformance assets, distribution scripts, workflows, package metadata, and roadmap coverage
+- Wired `apps/release_audit.cool --strict` into the release gate and added integration coverage for its JSON health output
+- Release candidates now package Phase 27 docs and distribution-readiness tooling, and release validation checks those files are present in archives
 
 ### Phase 26 — Post-1.0 Adoption And Compatibility
+
 
 - Added `docs/COMPATIBILITY.md`, `docs/CONFORMANCE.md`, `docs/ADOPTION.md`, and `docs/README.md` to define the stable 1.x compatibility contract, conformance workflow, adoption checklist, package-channel publication expectations, and docs entry point
 - Added `conformance/manifest.json` plus runtime/static conformance cases for core language behavior, typed language features, stable data stdlib helpers, strict typed APIs, and non-exhaustive match diagnostics

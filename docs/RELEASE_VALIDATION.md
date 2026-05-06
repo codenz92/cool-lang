@@ -24,6 +24,7 @@ The validator checks:
 - platform sidecars: `*.manifest.json`, `*.checksums.txt`, and `*.RC_NOTES.md`
 - trust files when `--require-trust` is present: SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS`
 - channel files when `--require-channels` is present: `channels.json`, `CHANNEL_SHA256SUMS`, Homebrew, Winget, Debian/apt metadata, and the channel tarball
+- distribution readiness reports when workflows run `scripts/distribution_readiness.sh`
 - optional installer execution with archive metadata verification
 
 Use `--verify-key <public-key.pem>` to verify detached OpenSSL signatures when
@@ -80,6 +81,19 @@ bash scripts/conformance_suite.sh \
   --report dist/validation/1.0.0/conformance-validation.json
 ```
 
+The Phase 27 distribution readiness audit can emit package-index evidence:
+
+```bash
+bash scripts/distribution_readiness.sh \
+  --version 1.0.0 \
+  --require-platform linux-x86_64 \
+  --require-platform macos-x86_64 \
+  --require-platform macos-arm64 \
+  --require-platform windows-x86_64 \
+  --report dist/validation/1.0.0/distribution-readiness.json \
+  --write-checklist dist/validation/1.0.0/DISTRIBUTION_CHECKLIST.md
+```
+
 ## Hosted Release Verification
 
 After assets are uploaded to a public GitHub Release or mirror, verify the
@@ -132,9 +146,11 @@ tag is cut.
 
 1. `bash scripts/release_gate.sh`
 2. `bash scripts/conformance_suite.sh --report dist/validation/<version>/conformance-validation.json`
-3. `bash scripts/release_candidate.sh --require-clean`
-4. `bash scripts/promote_release.sh --version <version>`
-5. `bash scripts/package_channels.sh generate --version <version>`
-6. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
-7. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
-8. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.
+3. `cool apps/release_audit.cool --strict`
+4. `bash scripts/release_candidate.sh --require-clean`
+5. `bash scripts/promote_release.sh --version <version>`
+6. `bash scripts/package_channels.sh generate --version <version>`
+7. `bash scripts/distribution_readiness.sh --version <version> --report dist/validation/<version>/distribution-readiness.json`
+8. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
+9. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
+10. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.

@@ -97,6 +97,9 @@ jobs:
           bash scripts/release_candidate.sh "${RC_ARGS[@]}"
           bash scripts/promote_release.sh "${PROMOTE_ARGS[@]}"
           bash scripts/package_channels.sh generate "${CHANNEL_ARGS[@]}"
+          bash scripts/distribution_readiness.sh "${CHANNEL_ARGS[@]}" \
+            --report "dist/validation/$VERSION_VALUE/distribution-readiness.json" \
+            --write-checklist "dist/validation/$VERSION_VALUE/DISTRIBUTION_CHECKLIST.md"
           VALIDATE_ARGS=(
             --version "$VERSION_VALUE"
             --require-trust
