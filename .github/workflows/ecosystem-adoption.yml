@@ -51,8 +51,10 @@ jobs:
           ./target/debug/cool --vm examples/first_30_minutes/src/main.cool
           ./target/debug/cool check examples/first_30_minutes/src/main.cool
           (
-            cd examples/first_30_minutes
-            ../../target/debug/cool build
+            EXAMPLE_TMP="$(mktemp -d)"
+            cp -R examples/first_30_minutes "$EXAMPLE_TMP/first_30_minutes"
+            cd "$EXAMPLE_TMP/first_30_minutes"
+            "$GITHUB_WORKSPACE/target/debug/cool" build
             ./first30
           )
 
