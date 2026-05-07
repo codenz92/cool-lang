@@ -917,7 +917,8 @@ static diagnostics, and emits JSON reports for CI or release evidence. See
 
 Phase 30 adds package-manager publication evidence on top of the Phase 29
 package submission and external install checks, package-channel readiness audit,
-launch-identity check, and Cool-written release audit app:
+launch-identity check, and Cool-written release audit app. Phase 31 adds
+submission packet generation and review-state tracking:
 
 ```bash
 bash scripts/release_launch_check.sh \
@@ -952,6 +953,11 @@ bash scripts/package_publication_check.sh \
   --report dist/validation/1.1.0/package-publication.json \
   --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
 
+bash scripts/package_submission_packet.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-submission-packet.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md
+
 ./target/release/cool apps/release_audit.cool --strict --json
 ```
 
@@ -960,6 +966,7 @@ See [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) and
 are tracked in
 [`docs/PACKAGE_MANAGER_SUBMISSIONS.md`](docs/PACKAGE_MANAGER_SUBMISSIONS.md),
 [`docs/PACKAGE_SUBMISSION_STATUS.json`](docs/PACKAGE_SUBMISSION_STATUS.json),
+[`docs/PACKAGE_SUBMISSION_REVIEW.md`](docs/PACKAGE_SUBMISSION_REVIEW.md),
 [`docs/PACKAGE_PUBLICATION.md`](docs/PACKAGE_PUBLICATION.md),
 and [`docs/ECOSYSTEM_ADOPTION.md`](docs/ECOSYSTEM_ADOPTION.md).
 

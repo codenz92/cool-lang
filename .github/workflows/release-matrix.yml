@@ -239,6 +239,13 @@ jobs:
             --report "dist/validation/$VERSION_VALUE/package-publication.json" \
             --write-evidence "dist/validation/$VERSION_VALUE/PACKAGE_PUBLICATION_EVIDENCE.md"
 
+          bash scripts/package_submission_packet.sh "${VERSION_ARGS[@]}" \
+            --require-channel homebrew \
+            --require-channel winget \
+            --require-channel debian \
+            --report "dist/validation/$VERSION_VALUE/package-submission-packet.json" \
+            --write-checklist "dist/validation/$VERSION_VALUE/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md"
+
           VALIDATE_ARGS=(
             --version "$VERSION_VALUE"
             --platform multi

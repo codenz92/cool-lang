@@ -15,6 +15,7 @@ or operationally specific for the top-level README.
 - `DISTRIBUTION.md` — package-manager distribution and readiness-audit workflow.
 - `PACKAGE_MANAGER_SUBMISSIONS.md` — Homebrew, Winget, and Debian/apt submission checklist after hosted verification.
 - `PACKAGE_SUBMISSION_STATUS.json` — structured Homebrew, Winget, and Debian/apt submission state.
+- `PACKAGE_SUBMISSION_REVIEW.md` - Phase 31 package-manager submission packets and review tracking.
 - `PACKAGE_PUBLICATION.md` — Phase 30 package-manager publication status and install evidence loop.
 - `ECOSYSTEM_ADOPTION.md` — Phase 29 package-manager and external install adoption loop.
 - `FIRST_30_MINUTES.md` — new-user install, check, VM, and native-build walkthrough.

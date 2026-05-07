@@ -10,10 +10,10 @@ builds, packaging, and docs before users do.
 - `apps/pulse.cool` / `apps/control.cool` — health-check automation and TUI
   dashboard.
 - `examples/coolboard/` — small service-style project.
-- `apps/release_audit.cool` — Phase 30 repo-health audit for distribution,
+- `apps/release_audit.cool` - Phase 31 repo-health audit for distribution,
   conformance, launch checks, ecosystem adoption docs, release workflows,
-  package submission checks, package publication checks, and package-channel
-  readiness.
+  package submission checks, package publication checks, package submission
+  packets, and package-channel readiness.
 
 ## Release Audit App
 
@@ -25,9 +25,9 @@ Run from the repository root:
 ```
 
 The app is intentionally written in Cool and uses stable file, TOML, JSON, path,
-and stdlib behavior. It fails when required Phase 26/27/28/29/30 docs,
+and stdlib behavior. It fails when required Phase 26/27/28/29/30/31 docs,
 conformance assets, launch checks, package submission/publication checks,
-release scripts, or workflows are missing.
+submission packet scripts, release scripts, or workflows are missing.
 
 ## Dogfood Rules
 

@@ -86,7 +86,8 @@ external feedback:
 ## Publication Loop
 
 1. Publish or verify the GitHub Release assets and package-channel archive.
-2. Run `package_submission_check.sh` and `external_install_check.sh`.
+2. Run `package_submission_check.sh`, `external_install_check.sh`, and
+   `package_submission_packet.sh`.
 3. Submit Homebrew, Winget, and Debian/apt metadata using immutable release
    URLs and SHA-256 values only.
 4. Update `docs/PACKAGE_SUBMISSION_STATUS.json` to `submitted` with the

@@ -8912,7 +8912,7 @@ fn test_pulse_and_control_apps_run_checks_from_manifest() {
 }
 
 #[test]
-fn test_release_audit_app_reports_phase30_surface() {
+fn test_release_audit_app_reports_phase31_surface() {
     let output = Command::new(cool_bin())
         .args(["apps/release_audit.cool", "--strict", "--json"])
         .output()
@@ -8962,6 +8962,18 @@ fn test_release_audit_app_reports_phase30_surface() {
         stdout.contains(".github/workflows/package-publication.yml exists"),
         "stdout:\n{stdout}"
     );
+    assert!(
+        stdout.contains("docs/PACKAGE_SUBMISSION_REVIEW.md exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("scripts/package_submission_packet.py exists"),
+        "stdout:\n{stdout}"
+    );
+    assert!(
+        stdout.contains(".github/workflows/package-submission-review.yml exists"),
+        "stdout:\n{stdout}"
+    );
 }
 
 #[test]
@@ -9003,6 +9015,86 @@ fn test_package_publication_check_reports_ready_channels() {
         evidence_text.contains("Package Publication Evidence For Cool 1.1.0"),
         "evidence:\n{evidence_text}"
     );
+
+    let _ = std::fs::remove_dir_all(&temp_dir);
+}
+
+#[test]
+fn test_package_submission_packet_generates_homebrew_packet() {
+    let temp_dir = unique_temp_dir("package_submission_packet");
+    let _ = std::fs::remove_dir_all(&temp_dir);
+    let channel_root = temp_dir.join("channels").join("1.1.0");
+    let formula_dir = channel_root.join("homebrew");
+    std::fs::create_dir_all(&formula_dir).unwrap();
+    std::fs::write(
+        formula_dir.join("cool.rb"),
+        r##"class Cool < Formula
+  desc "Cool language"
+  homepage "https://github.com/codenz92/cool-lang"
+  url "https://github.com/codenz92/cool-lang/releases/download/v1.1.0/cool-1.1.0-macos-arm64.tar.gz"
+  sha256 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  license "MIT"
+
+  def install
+    bin.install "bin/cool"
+  end
+
+  test do
+    system "#{bin}/cool", "help"
+  end
+end
+"##,
+    )
+    .unwrap();
+    std::fs::write(
+        channel_root.join("channels.json"),
+        r#"{
+  "package": {"name": "cool", "version": "1.1.0"},
+  "release": {"tag": "v1.1.0"},
+  "channels": {"homebrew_formula": "homebrew/cool.rb"},
+  "platforms": []
+}
+"#,
+    )
+    .unwrap();
+
+    let output_dir = temp_dir.join("submissions").join("1.1.0");
+    let report = temp_dir.join("package-submission-packet.json");
+    let checklist = temp_dir.join("PACKAGE_SUBMISSION_PACKET_CHECKLIST.md");
+    let output = Command::new("bash")
+        .args([
+            "scripts/package_submission_packet.sh",
+            "--version",
+            "1.1.0",
+            "--channel-root",
+            channel_root.to_str().unwrap(),
+            "--output-dir",
+            output_dir.to_str().unwrap(),
+            "--require-channel",
+            "homebrew",
+            "--report",
+            report.to_str().unwrap(),
+            "--write-checklist",
+            checklist.to_str().unwrap(),
+        ])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "stdout:\n{}\nstderr:\n{}",
+        String::from_utf8_lossy(&output.stdout),
+        String::from_utf8_lossy(&output.stderr)
+    );
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains("package submission packet: ok"), "stdout:\n{stdout}");
+    assert!(output_dir.join("homebrew").join("Formula").join("cool.rb").is_file());
+    assert!(output_dir.join("homebrew").join("PR_BODY.md").is_file());
+    assert!(output_dir.join("packet_manifest.json").is_file());
+    assert!(report.is_file());
+    assert!(checklist.is_file());
+    let report_text = std::fs::read_to_string(&report).unwrap();
+    assert!(report_text.contains("\"homebrew\""), "report:\n{report_text}");
 
     let _ = std::fs::remove_dir_all(&temp_dir);
 }

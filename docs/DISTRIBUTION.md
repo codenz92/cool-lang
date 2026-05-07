@@ -5,7 +5,8 @@ manual follow-up after GitHub Release upload. Phase 28 adds a launch check and
 package-manager submission checklist before metadata goes to public indexes.
 Phase 29 adds package submission and external install checks after channels are
 generated. Phase 30 adds publication-state evidence checks after package-index
-submission or publication changes.
+submission or publication changes. Phase 31 adds submission-packet generation
+and review-state tracking before external pull requests are opened.
 
 ## Release Asset Contract
 
@@ -86,6 +87,22 @@ bash scripts/package_publication_check.sh \
   --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
 ```
 
+## Generate Submission Packets
+
+Before opening package-index pull requests, run the Phase 31 packet generator:
+
+```bash
+bash scripts/package_submission_packet.sh \
+  --version 1.1.0 \
+  --require-channel homebrew \
+  --require-channel winget \
+  --require-channel debian \
+  --report dist/validation/1.1.0/package-submission-packet.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md
+```
+
+This writes review-ready packet directories under `dist/submissions/1.1.0/`.
+
 ## Hosted Verification
 
 After uploading release assets, verify the hosted package-channel archive:
@@ -117,6 +134,7 @@ If a package index requires a different layout, add that layout to
 `scripts/package_channels.py`, add validation to `scripts/validate_release.py`
 or `scripts/distribution_readiness.py`, and document the new contract here.
 See `docs/PACKAGE_MANAGER_SUBMISSIONS.md` for the public Homebrew, Winget, and
-Debian/apt submission checklist. See `docs/PACKAGE_PUBLICATION.md` for the
-publication ledger and `docs/ECOSYSTEM_ADOPTION.md` for the post-submit
+Debian/apt submission checklist. See `docs/PACKAGE_SUBMISSION_REVIEW.md` for
+submission packets and review tracking, `docs/PACKAGE_PUBLICATION.md` for the
+publication ledger, and `docs/ECOSYSTEM_ADOPTION.md` for the post-submit
 external install loop.

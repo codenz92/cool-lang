@@ -42,8 +42,8 @@ jobs:
         run: |
           VERSION="$(python3 -c 'import re, pathlib; print(re.search(r"(?m)^version\s*=\s*\"([^\"]+)\"", pathlib.Path("Cargo.toml").read_text(encoding="utf-8")).group(1))')"
 
-          bash -n scripts/package_submission_check.sh scripts/external_install_check.sh scripts/package_publication_check.sh
-          python3 -m py_compile scripts/package_submission_check.py scripts/external_install_check.py scripts/package_publication_check.py
+          bash -n scripts/package_submission_check.sh scripts/external_install_check.sh scripts/package_publication_check.sh scripts/package_submission_packet.sh
+          python3 -m py_compile scripts/package_submission_check.py scripts/external_install_check.py scripts/package_publication_check.py scripts/package_submission_packet.py
           find scripts -name __pycache__ -type d -prune -exec rm -rf {} +
 
           cargo build --bin cool
@@ -73,6 +73,10 @@ jobs:
             --version "$VERSION" \
             --report "dist/validation/$VERSION/package-publication.json" \
             --write-evidence "dist/validation/$VERSION/PACKAGE_PUBLICATION_EVIDENCE.md"
+          bash scripts/package_submission_packet.sh \
+            --version "$VERSION" \
+            --report "dist/validation/$VERSION/package-submission-packet.json" \
+            --write-checklist "dist/validation/$VERSION/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md"
 
       - name: Upload ecosystem reports
         if: always()

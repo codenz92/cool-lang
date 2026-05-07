@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "updated_at": "2026-05-07",
   "package": {
     "name": "cool",
@@ -14,18 +14,31 @@
       "blocked",
       "deferred"
     ],
+    "accepted_review_statuses": [
+      "not_submitted",
+      "open",
+      "changes_requested",
+      "approved",
+      "merged",
+      "rejected",
+      "blocked",
+      "deferred"
+    ],
     "official_references": {
       "homebrew": [
         "https://docs.brew.sh/Formula-Cookbook",
-        "https://docs.brew.sh/Acceptable-Formulae"
+        "https://docs.brew.sh/Acceptable-Formulae",
+        "https://docs.brew.sh/How-To-Open-a-Homebrew-Pull-Request"
       ],
       "winget": [
         "https://learn.microsoft.com/en-us/windows/package-manager/package/manifest",
-        "https://learn.microsoft.com/en-us/windows/package-manager/package/repository"
+        "https://learn.microsoft.com/en-us/windows/package-manager/package/repository",
+        "https://learn.microsoft.com/en-us/windows/package-manager/package/windows-package-manager-policies"
       ],
       "debian": [
         "https://www.debian.org/doc/debian-policy/",
-        "https://www.debian.org/doc/debian-policy/ch-controlfields.html"
+        "https://www.debian.org/doc/debian-policy/ch-controlfields.html",
+        "https://wiki.debian.org/DebianRepository/Format"
       ]
     }
   },
@@ -35,14 +48,21 @@
       "source": "dist/channels/1.1.0/homebrew/cool.rb",
       "verification": "brew audit --strict --online --formula dist/channels/1.1.0/homebrew/cool.rb",
       "submission_target": "Homebrew tap or homebrew/core after notability and policy review",
+      "submission_packet": "dist/submissions/1.1.0/homebrew",
+      "submission_branch": "",
       "submission_url": "",
+      "review_url": "",
+      "review_status": "not_submitted",
+      "review_labels": [],
       "published_url": "",
       "submitted_at": "",
+      "last_checked_at": "",
       "published_at": "",
       "verified_at": "",
       "public_install_command": "",
       "external_install_report": "",
       "blockers": [],
+      "next_action": "Generate the Homebrew submission packet, run brew audit/test commands, then open a tap or homebrew/core review if policy requirements are met.",
       "notes": "Submit after hosted release verification and package submission check pass."
     },
     "winget": {
@@ -50,14 +70,21 @@
       "source": "dist/channels/1.1.0/winget/Codenz.Cool/1.1.0",
       "verification": "winget validate dist/channels/1.1.0/winget/Codenz.Cool/1.1.0",
       "submission_target": "microsoft/winget-pkgs pull request",
+      "submission_packet": "dist/submissions/1.1.0/winget",
+      "submission_branch": "",
       "submission_url": "",
+      "review_url": "",
+      "review_status": "not_submitted",
+      "review_labels": [],
       "published_url": "",
       "submitted_at": "",
+      "last_checked_at": "",
       "published_at": "",
       "verified_at": "",
       "public_install_command": "",
       "external_install_report": "",
       "blockers": [],
+      "next_action": "Copy the Winget packet into a fork or branch of microsoft/winget-pkgs, run winget validate and SandboxTest, then open a pull request.",
       "notes": "Submit after Windows zip URL/hash are verified from the public release."
     },
     "debian": {
@@ -65,14 +92,21 @@
       "source": "dist/channels/1.1.0/apt",
       "verification": "dpkg-deb --info dist/channels/1.1.0/apt/pool/main/c/cool/cool_1.1.0_amd64.deb",
       "submission_target": "Generated apt mirror or downstream Debian packaging workflow",
+      "submission_packet": "dist/submissions/1.1.0/debian",
+      "submission_branch": "",
       "submission_url": "",
+      "review_url": "",
+      "review_status": "not_submitted",
+      "review_labels": [],
       "published_url": "",
       "submitted_at": "",
+      "last_checked_at": "",
       "published_at": "",
       "verified_at": "",
       "public_install_command": "",
       "external_install_report": "",
       "blockers": [],
+      "next_action": "Generate the Debian/apt packet, choose project-hosted apt mirror or downstream source packaging path, then record the review or mirror URL.",
       "notes": "Use generated apt tree as mirror input or downstream packaging input after hosted verification."
     }
   }

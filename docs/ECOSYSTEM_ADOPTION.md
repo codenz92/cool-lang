@@ -50,8 +50,8 @@ The maintained loop for each public release is:
 1. Publish the GitHub Release from the four-platform matrix.
 2. Verify hosted assets, trust metadata, package-channel archive, and direct
    installer smoke.
-3. Run distribution readiness and package submission checks against the
-   generated channel tree.
+3. Run distribution readiness, package submission, external install planning,
+   and package submission packet checks against the generated channel tree.
 4. Submit Homebrew, Winget, and Debian/apt metadata using immutable release
    URLs only.
 5. Update `docs/PACKAGE_SUBMISSION_STATUS.json` with submission URLs,

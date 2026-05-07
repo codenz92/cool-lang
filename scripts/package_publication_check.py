@@ -253,7 +253,7 @@ def validate(args):
     if require_file(checks, status_path, "package publication status file exists"):
         status = load_json(status_path)
     schema_version = status.get("schema_version")
-    add_check(checks, "publication status schema version supports Phase 30", schema_version == 2, str(schema_version))
+    add_check(checks, "publication status schema version supports Phase 30", schema_version in {2, 3}, str(schema_version))
     package = status.get("package", {})
     add_check(checks, "publication status package name matches", package.get("name") == package_name, package.get("name", ""))
     add_check(checks, "publication status current release matches", package.get("current_release") == version, package.get("current_release", ""))
@@ -282,6 +282,9 @@ def validate(args):
         if isinstance(record, dict):
             validate_channel(checks, channel, record, policy, required.get(channel), args)
             summaries[channel] = channel_summary(record)
+            if schema_version == 3:
+                add_check(checks, f"{channel} review status is tracked", bool(record.get("review_status")), record.get("review_status", ""))
+                add_check(checks, f"{channel} submission packet is tracked", bool(record.get("submission_packet")), record.get("submission_packet", ""))
 
     blockers = [check for check in checks if not check["ok"] and check["severity"] == "blocker"]
     warnings = [check for check in checks if not check["ok"] and check["severity"] != "blocker"]

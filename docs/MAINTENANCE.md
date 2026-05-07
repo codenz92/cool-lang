@@ -24,6 +24,7 @@ bash scripts/release_launch_check.sh --version <version>
 bash scripts/package_submission_check.sh --version <version>
 bash scripts/external_install_check.sh --version <version>
 bash scripts/package_publication_check.sh --version <version>
+bash scripts/package_submission_packet.sh --version <version> --ledger-only
 ```
 
 When public assets exist, rerun hosted verification with `--run-hosted` through

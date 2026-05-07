@@ -4,9 +4,10 @@ Phase 26 moves Cool from "released" to "adoptable". Phase 29 extends that loop
 from release assets into package-manager readiness, external install
 verification, and first-user evidence. Phase 30 adds publication-state tracking
 so external package-manager submissions and verified install commands become
-repeatable release evidence. The priority is not a new language feature tranche;
-it is making installation, documentation, compatibility, and performance
-evidence repeatable.
+repeatable release evidence. Phase 31 adds submission packet generation and
+review-state tracking before external package-manager pull requests are opened.
+The priority is not a new language feature tranche; it is making installation,
+documentation, compatibility, and performance evidence repeatable.
 
 ## Maintainer Checklist
 
@@ -20,10 +21,11 @@ For each post-1.0 release:
 5. Run distribution readiness and keep its JSON report/checklist with release evidence.
 6. Run package submission and external install checks after channel generation.
 7. Run package publication checks after submission or publication status changes.
-8. Run `apps/release_audit.cool --strict` before release.
-9. Record any supported-platform or compatibility-policy exception in release
+8. Run package submission packet checks before opening external reviews.
+9. Run `apps/release_audit.cool --strict` before release.
+10. Record any supported-platform or compatibility-policy exception in release
    notes.
-10. Capture a performance baseline when native backend or runtime changes may
+11. Capture a performance baseline when native backend or runtime changes may
    affect benchmark behavior.
 
 ## Package Channels
@@ -95,6 +97,15 @@ bash scripts/package_publication_check.sh \
   --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
 ```
 
+Phase 31 adds submission packet checks:
+
+```bash
+bash scripts/package_submission_packet.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-submission-packet.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md
+```
+
 ## Documentation
 
 The top-level README remains the broad feature tour. New long-form docs should
@@ -110,7 +121,8 @@ Prefer focused pages:
 
 The current structured entry points are `docs/LANGUAGE_REFERENCE.md`,
 `docs/NATIVE_COMPILER.md`, `docs/STDLIB_OVERVIEW.md`, `docs/DISTRIBUTION.md`,
-`docs/PACKAGE_MANAGER_SUBMISSIONS.md`, `docs/PACKAGE_PUBLICATION.md`,
+`docs/PACKAGE_MANAGER_SUBMISSIONS.md`, `docs/PACKAGE_SUBMISSION_REVIEW.md`,
+`docs/PACKAGE_PUBLICATION.md`,
 `docs/ECOSYSTEM_ADOPTION.md`, `docs/FIRST_30_MINUTES.md`,
 `docs/MAINTENANCE.md`, and `docs/DOGFOODING.md`.
 

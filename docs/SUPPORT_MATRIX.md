@@ -24,6 +24,7 @@ release verification.
 | Channel archive | Full `dist/channels/<version>/` tree | Every release channel generation | `verify_hosted_release.sh --check-channel-archive` |
 | Package submission evidence | Generated channel tree | After hosted verification | `package_submission_check.sh` and `external_install_check.sh` |
 | Package publication evidence | Status ledger and external install reports | After submission or publication changes | `package_publication_check.sh` |
+| Package review packets | Generated channel tree and status ledger | Before external package-manager reviews | `package_submission_packet.sh` |
 
 ## Verification Coverage
 
@@ -39,6 +40,8 @@ checks the same public contract from the user's point of view:
   readiness and post-submit evidence.
 - Phase 30 package publication checks for submitted/published status, install
   commands, and external evidence links.
+- Phase 31 package submission packets for review-ready Homebrew, Winget, and
+  Debian/apt layouts plus review-state tracking.
 - `release.json`, `latest.json`, and `SHA256SUMS` hashes and sizes.
 - Platform tarball and zip payload roots, manifests, payload checksums, docs, and release scripts.
 - SBOM, provenance, `trust.json`, and `TRUST_SHA256SUMS` when trust is required.

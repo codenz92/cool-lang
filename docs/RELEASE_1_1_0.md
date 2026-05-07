@@ -50,6 +50,7 @@ those package-manager submissions move through review:
 - Submission gate: `scripts/package_submission_check.sh --version 1.1.0`
 - External install plan: `scripts/external_install_check.sh --version 1.1.0`
 - Publication gate: `scripts/package_publication_check.sh --version 1.1.0`
+- Submission packet gate: `scripts/package_submission_packet.sh --version 1.1.0`
 - Current channel state: Homebrew, Winget, and Debian/apt are `ready` pending
   public package-index submission links.
 

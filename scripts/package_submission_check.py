@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_URL = "https://github.com/codenz92/cool-lang/releases/download"
 VALID_STATUSES = {"ready", "submitted", "published", "blocked", "deferred"}
-VALID_STATUS_SCHEMA_VERSIONS = {1, 2}
+VALID_STATUS_SCHEMA_VERSIONS = {1, 2, 3}
 
 
 def fail(message):
@@ -164,7 +164,7 @@ def validate_status_file(checks, status_file, package_name, version):
                 bool(record.get("submission_url") or record.get("published_url")),
                 str(record),
             )
-        if data.get("schema_version") == 2:
+        if data.get("schema_version") in (2, 3):
             for field in ("submitted_at", "published_at", "verified_at", "public_install_command", "external_install_report"):
                 add_check(
                     checks,

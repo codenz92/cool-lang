@@ -16,6 +16,12 @@ Phase 30 adds the publication ledger gate:
 bash scripts/package_publication_check.sh --version 1.1.0
 ```
 
+Phase 31 adds submission packet generation and review tracking:
+
+```bash
+bash scripts/package_submission_packet.sh --version 1.1.0
+```
+
 Track channel state in `docs/PACKAGE_SUBMISSION_STATUS.json` and record final
 links, install commands, dates, and evidence reports in the versioned release
 record.
@@ -87,6 +93,8 @@ brew install --formula dist/channels/<version>/homebrew/cool.rb
 cool help
 ```
 
+Generate the packet with `package_submission_packet.sh` and use
+`dist/submissions/<version>/homebrew/PR_BODY.md` as the review starting point.
 After publication, update the status ledger to `published`, record the public
 install command and evidence report, then run
 `package_publication_check.sh --require-published homebrew`.
@@ -115,6 +123,9 @@ winget install --manifest dist/channels/<version>/winget/Codenz.Cool/<version> -
 cool help
 ```
 
+Generate the packet with `package_submission_packet.sh` and copy the generated
+`manifests/c/Codenz/Cool/<version>/` tree into a `microsoft/winget-pkgs` fork or
+branch.
 After publication, verify `winget install Codenz.Cool` from a clean Windows
 environment, record the output, and run
 `package_publication_check.sh --require-published winget`.
@@ -152,3 +163,5 @@ command, then run `package_publication_check.sh --require-published debian`.
 After package-manager submissions are opened or published, add their links and
 any required manual edits to the versioned release record under
 `docs/RELEASE_<version>.md`.
+Use `docs/PACKAGE_SUBMISSION_REVIEW.md` for review-state rules and packet
+contents.

@@ -32,6 +32,7 @@
 10. Public `v1.1.0` launch preparation with version alignment, launch evidence, and package-manager submission gates
 11. Package-manager submission readiness, external install verification, and first-user adoption evidence
 12. Package-manager publication-state tracking, public install evidence, and release ledger validation
+13. Package-manager submission packet generation and review-state tracking
 
 ## Legend
 
@@ -977,6 +978,45 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 
 ---
 
+## Phase 31 - Package Manager Submission And Review Tracking [Complete]
+
+> Goal: prepare external package-manager reviews with generated submission
+> packets and review-state tracking while keeping `ready`, `submitted`, and
+> `published` claims honest.
+
+### Submission Packets
+
+- [x] `scripts/package_submission_packet.sh` / `.py` generate review-ready
+  Homebrew, Winget, and Debian/apt packets from generated package channels
+- [x] Homebrew packets include `Formula/cool.rb`, review notes, and audit/test
+  commands for tap or `homebrew/core` review
+- [x] Winget packets copy manifests into the `microsoft/winget-pkgs` repository
+  layout under `manifests/c/Codenz/Cool/<version>/`
+- [x] Debian/apt packets copy the generated apt tree and document the boundary
+  between a project-hosted mirror and official Debian source-package review
+
+### Review Ledger
+
+- [x] `docs/PACKAGE_SUBMISSION_STATUS.json` uses schema version 3 with
+  `review_status`, `review_url`, `submission_branch`, `review_labels`,
+  `last_checked_at`, `next_action`, and `submission_packet`
+- [x] `docs/PACKAGE_SUBMISSION_REVIEW.md` defines review states and the evidence
+  needed before a channel can move from `ready` to `submitted`
+- [x] Submission packet reports and Markdown checklists can be written under
+  `dist/validation/<version>/`
+
+### Release And CI Wiring
+
+- [x] Release validation, release matrix, published-release validation,
+  synthetic matrix smoke, and a dedicated package-submission-review workflow run
+  the Phase 31 checks
+- [x] Release candidates, promoted release assets, matrix assembly, and release
+  validation package and verify the Phase 31 docs/scripts
+- [x] `apps/release_audit.cool --strict` checks the Phase 31 docs, scripts,
+  workflow wiring, and roadmap coverage from Cool code
+
+---
+
 ## Summary
 
 | Phase | Status |
@@ -1011,3 +1051,4 @@ The self-hosted compiler lives in `coolc/compiler_vm.cool`. It includes a full l
 | 28 — Public 1.1.0 Release Launch | ✅ Complete |
 | 29 — Ecosystem Publication And Adoption Loop | ✅ Complete |
 | 30 — Public Package Publication Evidence | ✅ Complete |
+| 31 - Package Manager Submission And Review Tracking | Complete |

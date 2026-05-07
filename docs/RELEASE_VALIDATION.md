@@ -42,6 +42,16 @@ bash scripts/package_publication_check.sh \
   --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
 ```
 
+Phase 31 adds submission packet generation and review-status checks before
+external package-manager pull requests are opened:
+
+```bash
+bash scripts/package_submission_packet.sh \
+  --version 1.1.0 \
+  --report dist/validation/1.1.0/package-submission-packet.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md
+```
+
 ## Validate A Promoted Release
 
 ```bash
@@ -164,6 +174,18 @@ bash scripts/package_publication_check.sh \
   --write-evidence dist/validation/1.1.0/PACKAGE_PUBLICATION_EVIDENCE.md
 ```
 
+The Phase 31 submission packet check emits package-manager review packets:
+
+```bash
+bash scripts/package_submission_packet.sh \
+  --version 1.1.0 \
+  --require-channel homebrew \
+  --require-channel winget \
+  --require-channel debian \
+  --report dist/validation/1.1.0/package-submission-packet.json \
+  --write-checklist dist/validation/1.1.0/PACKAGE_SUBMISSION_PACKET_CHECKLIST.md
+```
+
 ## Hosted Release Verification
 
 After assets are uploaded to a public GitHub Release or mirror, verify the
@@ -207,10 +229,11 @@ bash scripts/smoke_matrix_release.sh --version 1.1.0
 The smoke driver repacks the host payload into Linux, macOS Intel, macOS Arm, and
 Windows x64-shaped artifacts, assembles them with `assemble_matrix_release.sh`,
 generates trust metadata, generates package channels with all required-platform
-checks, runs package submission/external install/publication checks, and runs
-`validate_release.sh` against the resulting multi-platform release. This does
-not replace a real tagged matrix release, but it catches metadata, channel,
-checksum, archive-layout, and packaging regressions before the tag is cut.
+checks, runs package submission/external install/publication/submission-packet
+checks, and runs `validate_release.sh` against the resulting multi-platform
+release. This does not replace a real tagged matrix release, but it catches
+metadata, channel, checksum, archive-layout, and packaging regressions before
+the tag is cut.
 
 ## Release Checklist
 
@@ -225,6 +248,7 @@ checksum, archive-layout, and packaging regressions before the tag is cut.
 9. `bash scripts/package_submission_check.sh --version <version> --report dist/validation/<version>/package-submission.json`
 10. `bash scripts/external_install_check.sh --version <version> --report dist/validation/<version>/external-install.json`
 11. `bash scripts/package_publication_check.sh --version <version> --report dist/validation/<version>/package-publication.json`
-12. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
-13. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
-14. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.
+12. `bash scripts/package_submission_packet.sh --version <version> --report dist/validation/<version>/package-submission-packet.json`
+13. `bash scripts/validate_release.sh --version <version> --require-trust --require-channels --install-smoke`
+14. For a real release, dispatch `Release Matrix` or push tag `v<version>` and confirm the aggregate validation report passes.
+15. After the release is public, run `Hosted Release Verify` or `scripts/verify_hosted_release.sh` against the hosted assets.

@@ -298,6 +298,7 @@ Release gate: $GATE_STATUS
 - \`docs/SUPPORT_MATRIX.md\`
 - \`docs/PACKAGE_MANAGER_SUBMISSIONS.md\`
 - \`docs/PACKAGE_SUBMISSION_STATUS.json\`
+- \`docs/PACKAGE_SUBMISSION_REVIEW.md\`
 - \`docs/PACKAGE_PUBLICATION.md\`
 - \`docs/ECOSYSTEM_ADOPTION.md\`
 - \`docs/FIRST_30_MINUTES.md\`
@@ -317,6 +318,8 @@ Release gate: $GATE_STATUS
 - \`scripts/external_install_check.py\`
 - \`scripts/package_publication_check.sh\`
 - \`scripts/package_publication_check.py\`
+- \`scripts/package_submission_packet.sh\`
+- \`scripts/package_submission_packet.py\`
 - \`scripts/assemble_matrix_release.sh\`
 - \`scripts/assemble_matrix_release.py\`
 - \`scripts/validate_release.sh\`
@@ -495,7 +498,8 @@ cp docs/README.md docs/COMPATIBILITY.md docs/CONFORMANCE.md docs/ADOPTION.md "$R
 cp docs/DISTRIBUTION.md docs/DOGFOODING.md docs/LANGUAGE_REFERENCE.md "$RC_DIR/docs/"
 cp docs/NATIVE_COMPILER.md docs/STDLIB_OVERVIEW.md "$RC_DIR/docs/"
 cp docs/PACKAGE_MANAGER_SUBMISSIONS.md "$RC_DIR/docs/"
-cp docs/PACKAGE_SUBMISSION_STATUS.json docs/PACKAGE_PUBLICATION.md "$RC_DIR/docs/"
+cp docs/PACKAGE_SUBMISSION_STATUS.json docs/PACKAGE_SUBMISSION_REVIEW.md "$RC_DIR/docs/"
+cp docs/PACKAGE_PUBLICATION.md "$RC_DIR/docs/"
 cp docs/ECOSYSTEM_ADOPTION.md "$RC_DIR/docs/"
 cp docs/FIRST_30_MINUTES.md docs/MAINTENANCE.md "$RC_DIR/docs/"
 for release_doc in docs/RELEASE_*.md; do
@@ -508,6 +512,7 @@ cp scripts/package_channels.sh scripts/package_channels.py "$RC_DIR/scripts/"
 cp scripts/package_submission_check.sh scripts/package_submission_check.py "$RC_DIR/scripts/"
 cp scripts/external_install_check.sh scripts/external_install_check.py "$RC_DIR/scripts/"
 cp scripts/package_publication_check.sh scripts/package_publication_check.py "$RC_DIR/scripts/"
+cp scripts/package_submission_packet.sh scripts/package_submission_packet.py "$RC_DIR/scripts/"
 cp scripts/assemble_matrix_release.sh scripts/assemble_matrix_release.py "$RC_DIR/scripts/"
 cp scripts/validate_release.sh scripts/validate_release.py "$RC_DIR/scripts/"
 cp scripts/verify_hosted_release.sh scripts/verify_hosted_release.py "$RC_DIR/scripts/"

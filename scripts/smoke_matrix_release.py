@@ -263,6 +263,25 @@ def main():
             str(matrix_dist / "validation" / version / "PACKAGE_PUBLICATION_EVIDENCE.md"),
         ]
         run(publication_cmd)
+        packet_cmd = [
+            "bash",
+            "scripts/package_submission_packet.sh",
+            "--version",
+            version,
+            "--dist-dir",
+            str(matrix_dist),
+            "--require-channel",
+            "homebrew",
+            "--require-channel",
+            "winget",
+            "--require-channel",
+            "debian",
+            "--report",
+            str(matrix_dist / "validation" / version / "package-submission-packet.json"),
+            "--write-checklist",
+            str(matrix_dist / "validation" / version / "PACKAGE_SUBMISSION_PACKET_CHECKLIST.md"),
+        ]
+        run(packet_cmd)
         validate_cmd = [
             "bash",
             "scripts/validate_release.sh",

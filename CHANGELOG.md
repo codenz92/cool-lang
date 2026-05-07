@@ -4,6 +4,13 @@ All notable changes to the Cool language project.
 
 ## [Unreleased]
 
+### Phase 31 - Package Manager Submission And Review Tracking
+
+- Added `scripts/package_submission_packet.sh` / `.py` to generate review-ready Homebrew, Winget, and Debian/apt submission packets from generated package channels, including per-channel submission notes, pull-request body templates, and a packet manifest
+- Upgraded `docs/PACKAGE_SUBMISSION_STATUS.json` to schema version 3 with review status, review URL, submission branch, review labels, last-checked timestamp, next action, and submission packet fields
+- Added `docs/PACKAGE_SUBMISSION_REVIEW.md` for package-manager review states, packet contents, Homebrew audit/test commands, Winget repository layout and sandbox validation, and Debian/apt mirror vs downstream packaging policy
+- Wired submission packet checks into release validation, release matrix assembly, published-release validation, synthetic matrix smoke, release gate ledger checks, package submission review CI, release artifacts, and the Cool-written release audit app
+
 ### Phase 30 — Public Package Publication Evidence
 
 - Added `scripts/package_publication_check.sh` / `.py` to validate package-manager publication status, official channel references, submission/publication URLs, public install commands, and external install evidence recorded in `docs/PACKAGE_SUBMISSION_STATUS.json`
